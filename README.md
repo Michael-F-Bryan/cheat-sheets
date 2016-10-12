@@ -31,4 +31,26 @@ from a Linux machine).
 you are editing it, everything will get regenerated and updated in your browser
 every time a file is saved.
 
-  mdbook serve
+    mdbook serve
+
+`mdbook` expects a directory structure similar to the following:
+
+    .
+    ├── README.md
+    ├── src
+    |  ├── SUMMARY.md
+    |  ├── chapter-1.md
+    |  └── ...
+    └── book
+       ├── index.html
+       └── ...
+
+When you build the book, all generated html is put in the `/book` directory
+using the Markdown files in the `/src` directory according to the contents of
+`/src/SUMMARY.md`.
+
+For more information on how to use `mdbook`, consult the
+[documentation][mdbook].
+
+
+[mdbook]: http://azerupi.github.io/mdBook/README.html
