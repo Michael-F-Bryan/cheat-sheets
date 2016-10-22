@@ -1,8 +1,12 @@
 language: rust
 install:
   - cargo install mdbook
-  - sudo pip3 install ghp-import
+  - sudo pip install --upgrade pip
+  - sudo pip install ghp-import
   - export PATH="$PATH:~/.cargo/bin"
+cache:
+  - cargo
+  - pip
 script: true
 after_success: |
   [ $TRAVIS_BRANCH = master ] &&
