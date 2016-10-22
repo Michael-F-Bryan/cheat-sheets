@@ -1,0 +1,12 @@
+language: rust
+after_success: |
+  [ $TRAVIS_BRANCH = master ] &&
+  [ $TRAVIS_PULL_REQUEST = false ] &&
+  cargo install mdbook &&
+  mdbook build &&
+  sudo pip install ghp-import &&
+  ghp-import -n book &&
+  git push -fq https://${GH_TOKEN}@github.com/${TRAVIS_REPO_SLUG}.git gh-pages
+env:
+  global:
+    secure: Ysn0jh6DDj4+WQKsbSwGR0gmAJfCdHBOIiQhv450I8ftKn6LnuCfqTDsSscZRAy7ic+mJTEfjkIU6SgOBM8yM7ZUODFMlflYF7O2wkiEmsekxAw2rpbhSEHkDeCde84FJ8S4UfI043BwvpnJd0q7K/I6D9Gzc6iUx2/VdmOwbu9jpaVIWDUNAYMmyq64o1DuKb6ctW4xiUpw2RRXBbs0f0HAc6uPpKZbzV2LpWjdFme147BM1aQHgpGdp5BfD2HrpT1NxLtn9D/dq6CVaw6PzxzThU5Yx7RAd5PV5+5a0J6/m6EZPIiA7iqVNoaofLNmzvkuUEfQSAve3Fd822uzip1DFQsELopoy5a0ic+i40TdaA5qIaxtmbbtdD32OKRPAoYQoTBFL/HpgIwcWyTOvqg4U0nSVCFVLnpfGz56WmPqF+CMPl9nMOn47Vqc3ybzICJkdOHUQDGnxbqJ33j2qzWeRJ0gx69406XiHUn8AvjU8PcUyxfya0+J8XVPHefaeOkBFl+7JyDa9nbdojoGALBrcTHpm2ltTMX8e0/OXDi0kh8b1qVA7IZoxnHeUxU9nNM4kMYAnHXE6A4Cyc6wq+CdGVtqLh6PPYIgzKAVzH/WH3bWtn1j7Uf1UGiGmhFeX9H8wo1p6XfM/z1E+gmuA6buJG7aomDYIYQBnbc0PDU=
