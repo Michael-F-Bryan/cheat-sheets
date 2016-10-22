@@ -1,6 +1,6 @@
 language: rust
-install:
-  - cargo install mdbook || echo "mdbook already installed"; exit 0
+before_install:
+  - cargo install mdbook || echo "mdbook already installed"
   - sudo pip install --upgrade pip
   - sudo pip install ghp-import
   - export PATH="$PATH:~/.cargo/bin"
