@@ -4,6 +4,7 @@ after_success: |
   [ $TRAVIS_BRANCH = master ] &&
   [ $TRAVIS_PULL_REQUEST = false ] &&
   cargo install mdbook &&
+  export PATH="$PATH:~/.cargo/bin" &&
   mdbook build &&
   sudo pip install ghp-import &&
   ghp-import -n book &&
