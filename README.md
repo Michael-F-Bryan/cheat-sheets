@@ -4,6 +4,11 @@ Michael's Cheat Sheets
 A collection of various cheat sheets, code snippets and quick articles
 explaining some of the common things I've done.
 
+[![Build Status](https://travis-ci.org/Michael-F-Bryan/cheat-sheets.svg?branch=master)](https://travis-ci.org/Michael-F-Bryan/cheat-sheets)
+
+`travis-ci` rebuilds the cheat sheets every time I make a commit, so you can
+view the latest version [here](https://michael-f-bryan.github.io/cheat-sheets/).
+
 
 Usage
 -----
