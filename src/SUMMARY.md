@@ -6,3 +6,5 @@
 - [Python](./Python/index.md)
     - [SqlAlchemy](./Python/sqlalchemy.md)
 - [Basic Server Setup](./basic-server-setup.md)
+- [Rust](./Rust/index.md)
+    - [Using Rust outside Rust](./Rust/rust_interop.md)
