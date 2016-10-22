@@ -57,6 +57,15 @@ prime.rs  libprime.so
 
 Aaaannnnddd we're done. How easy was that?
 
+Because the library hasn't been installed into one of the standard locations
+(i.e. `/usr/lib/`), you'll also need to add an environment variable so things
+know where to find it. You'd need to do the exact same with a C/C++ library
+as well.
+
+```bash
+$ export LD_LIBRARY_PATH=.
+```
+
 
 # C
 
