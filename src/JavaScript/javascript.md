@@ -159,12 +159,12 @@ once the response is received. Jquery then gives you a nice wrapper around
 this. [Read the docs][jquery-ajax] for more details.
 
 - **jQuery.get():** Load data from the server using a HTTP GET request.
-- **jQuery.getJSON():** Load JSON-encoded data from the server using a GET 
+- **jQuery.getJSON():** Load JSON-encoded data from the server using a GET
   HTTP request.  
 - **jQuery.getScript():** Load a JavaScript file from the server using a GET HTTP request, then
   execute it.
 - **jQuery.post():** Load data from the server using a HTTP POST request.
-- **jQuery.load():** Load data from the server and place the returned HTML into the 
+- **jQuery.load():** Load data from the server and place the returned HTML into the
    matched element.
 
 

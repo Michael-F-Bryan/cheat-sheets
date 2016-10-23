@@ -21,11 +21,11 @@ running
     mdbook build
 
 If you don't have `Rust` installed, by far the easiest thing to do is get it
-from `https://rustup.rs/`. `Rustup` is a tool created by the `Rust` developers
-for managing multiple versions of the `Rust` compiler at the same time, as well
-as continuously keeping it up to date, and installing alternate compilation
-targets (e.g. so you can effortlessly cross-compile for Android or Windows
-from a Linux machine).
+from [https://rustup.rs/][rustup]. `Rustup` is a tool created by the `Rust`
+developers for managing multiple versions of the `Rust` compiler at the same
+time, as well as continuously keeping it up to date, and installing alternate
+compilation targets (e.g. so you can effortlessly cross-compile for Android or
+Windows from a Linux machine).
 
 `mdbook` also has a nice feature where it'll serve your documentation and as
 you are editing it, everything will get regenerated and updated in your browser
@@ -54,3 +54,4 @@ For more information on how to use `mdbook`, consult the
 
 
 [mdbook]: http://azerupi.github.io/mdBook/README.html
+[rustup]: https://rustup.rs/
