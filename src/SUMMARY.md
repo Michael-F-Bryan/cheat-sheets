@@ -9,3 +9,4 @@
 - [Rust](./Rust/index.md)
     - [Using Rust outside Rust](./Rust/rust_interop.md)
 - [Testing In C](./testing_in_c.md)
+- [LaTeX Snippets](./latex.md)
