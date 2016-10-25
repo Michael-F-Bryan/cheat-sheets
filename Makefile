@@ -1,3 +1,6 @@
+BUCKET = www.michaelfbryan.com
+
+
 build:
 	mdbook build
 
@@ -9,3 +12,9 @@ rust_interop:
 	@echo
 	@echo "NOTE: Remember to cd to the ./src/Rust/ directory and run"
 	@echo "'export LD_LIBRARY_PATH=.' before trying any of the binaries"
+
+publish: build
+	aws s3 sync book s3://$(BUCKET)/
+
+
+.PHONY: publish
