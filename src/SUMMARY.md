@@ -8,5 +8,6 @@
 - [Basic Server Setup](./basic-server-setup.md)
 - [Rust](./Rust/index.md)
     - [Using Rust outside Rust](./Rust/rust_interop.md)
+    - [Emails and Templates](./Rust/emails_and_templates.md)
 - [Testing In C](./testing_in_c.md)
 - [LaTeX Snippets](./latex.md)
