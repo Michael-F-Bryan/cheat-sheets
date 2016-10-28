@@ -169,7 +169,7 @@ assert!(result_2.is_ok());
 
 // Explicitly close the SMTP transaction as we enabled connection reuse
 mailer.close();
-```rust
+```
 
 [lettre]: https://github.com/lettre/lettre
 [tera]: https://github.com/Keats/tera
