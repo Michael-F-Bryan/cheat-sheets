@@ -63,6 +63,31 @@ Slanted fractions can be accessed via the `xfrac` package.
 \end{align}
 ```
 
+When using `Python` and `Pandas` for numerical analysis, it is almost trivial
+to set things up so that the results are exported to a file, then included in
+a LaTeX report automatically.
+
+On the `Python` side:
+
+```python
+with open('data_table.tex', 'w') as f:
+    table = data.to_latex(index=False, escape=False)
+    f.write(table)
+```
+
+And in LaTeX:
+
+```tex
+\usepackage{booktabs}           
+...
+
+\begin{table}[h]
+  \caption{Calculated and Measured Data}\label{tbl:data_table}
+  \input{./data_table.tex}
+\end{table}
+```
+
+
 ## Appendices
 
 To start off the appendices section requires just one command:
@@ -83,4 +108,29 @@ To embed a PDF as one of your appendices, you can use the `pdfpages` package:
 % tad to make it fit more nicely
 \includepdf[pagecommand=\section{Numerical Analysis}, scale=0.75, pages=1]{./Numerical_Analysis.pdf}
 \includepdf[scale=0.75, pages=2-]{./Numerical_Analysis.pdf}
+```
+
+
+## Nomenclature
+
+A nomenclature works pretty much the same way as index entries.
+
+First you need to import the package and let it do some setup stuff:
+
+```tex
+\usepackage{nomencl}
+\makenomenclature
+```
+
+Then you'll define some symbols:
+
+```tex
+\nomenclature{$c$}{Speed of light in a vacuum inertial frame}
+\nomenclature{$h$}{Planck constant}
+```
+
+And finally tell LaTeX to print the nomenclature:
+
+```tex
+\printnomenclature
 ```
