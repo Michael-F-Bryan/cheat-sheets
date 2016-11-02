@@ -134,3 +134,39 @@ And finally tell LaTeX to print the nomenclature:
 ```tex
 \printnomenclature
 ```
+
+
+## Referencing
+
+Referencing in LaTeX is designed to be fairly painless and efficient to do.
+
+To cite various sources throughout your work, just add in a `\cite{foo}`, where
+`foo` would be a name for some reference in your `*.bib` file.
+
+The easiest way to manage your references is with a `bib` file that sits next
+to your other `tex` files. It's just a basic text file with references and
+their various bits of metadata listed;
+
+```tex
+@misc{chapter_6_notes,
+    author =       "Ramesh Narayanaswamy",
+    title =        "Flow Over Immersed Bodies: Concepts of Lift and Drag - Chapter 6",
+    year =         "2016",
+    URL =          "https://lms.curtin.edu.au/bbcswebdav/pid-4268432-dt-content-rid-23946938_1/courses/308810-CU-061-01-Sxx-x2/2016/LectureNotes/MCEN3002_2016_Chapter_06.pdf"
+}
+```
+
+It's pretty much identical to what you'd normally need to enter in when using
+`Word`, except instead of filling in random boxes, it's entered into a text
+file that anything (not just M$ products) can read. Plus it's easy to put into
+version control.
+
+Once you've written up your reference database, all you need to do is tell LaTeX
+to print a bibliography using your `foo.bib` file, and also the referencing
+style to use.
+
+
+```tex
+\bibliographystyle{plain}
+\bibliography{references}
+```
