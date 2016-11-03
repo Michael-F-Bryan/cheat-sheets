@@ -1,1 +1,93 @@
-/home/michael/Documents/uni_work/lab_report_template.tex
+\documentclass[a4paper,12pt]{article}
+\usepackage{graphicx}
+\usepackage{amsmath}            % for align
+\usepackage{amssymb}            % for \therefore
+\usepackage{xfrac}              % for slanted fractions like 1/2
+\usepackage{pdfpages}           % insert pdf documents
+\usepackage{float}              % better control over floats and figures
+\usepackage[section]{placeins}  % Stop floats from crossing sections
+\usepackage{setspace}           % custom spacing
+
+\usepackage{hyperref}  % Add hyperlinks to the pdf
+\usepackage{cleveref}  % add the \nameref{} command to insert the
+                       %     reference's name instead of number
+
+
+% Set the bibliography style  [Entwistle, 2016]
+\bibliographystyle{apalike}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+
+% Add the cover page
+\include{cover_page}
+
+
+\tableofcontents
+\listoffigures
+\listoftables
+\clearpage
+
+
+\section*{Nomenclature}
+% TODO: Insert Nomenclature here!
+
+\clearpage
+
+
+\section{Introduction}
+% Introduce briefly, the significance of the topic investigated in the
+% laboratory work.
+
+
+\section{Objectives}
+% Describe in point form the main objectives of the experiment.
+
+
+\section{Theory}
+% Provide minimum theory that is only essential to evaluate the quantities of
+% interest in the experiment.
+
+
+\section{Apparatus}
+% Describe the main apparatus with all instrumentation attached to it that was
+% used for carrying out the experiment. Indicate the range and accuracy of
+% measuring devices.
+
+\section{Procedure}
+% Explain briefly how measurements were made, parametric values used and
+% precautions taken.
+
+
+\section{Results}
+% Present in tabulated form, all the original measurements and the final
+% computed results with their units. DO NOT over-state accuracy of computed
+% results beyond what is obtainable from measurements. Graphs must be properly
+% labelled for identification of variables.
+
+
+\section{Discussion}
+% Discuss all observable trends or patterns of the readings taken or results
+% computed. Give possible reasons for such variations and explain the observed
+% behaviour. Discuss possible sources of errors of measurements and
+% improvements that may lead to better results.
+
+
+\section{Conclusion}
+% Comment on how satisfactorily the initial objectives of the experiment were
+% achieved.
+
+
+% Print the bibliography
+\bibliography{references}
+
+
+\appendix
+
+% Note, I added the front page separately so you can add a \section{} command
+% to make the appendix appear in the ToC. You also scale the document down a
+% tad to make it fit more nicely
+%\includepdf[pagecommand=\section{Numerical Analysis}, scale=0.75, pages=1]{./Numerical_Analysis.pdf}
+%\includepdf[scale=0.75, pages=2-]{./Numerical_Analysis.pdf}
+
+\end{document}
