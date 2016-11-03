@@ -16,5 +16,4 @@ rust_interop:
 publish: build
 	aws s3 sync book s3://$(BUCKET)/
 
-
 .PHONY: publish

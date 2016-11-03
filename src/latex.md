@@ -167,6 +167,128 @@ style to use.
 
 
 ```tex
-\bibliographystyle{plain}
+\bibliographystyle{apalike}
 \bibliography{references}
 ```
+
+Check out [this page][refs] for a list of the various bibliography and citation
+styles, and [this page][dot_bib] for the various fields and entry types for your
+`*.bib` file.
+
+
+## Templates
+
+I've got a pair of templates I use for pretty much everything.
+
+* [General report template](./lab_report_template.tex)
+* [Cover Sheet](./cover_page_template.tex)
+
+
+## Code Listings
+
+To insert code snippets you'll need the `listings` package.
+
+```tex
+\usepackage{listings}
+```
+
+Then you can use the `lstlisting` environment for your code.
+
+```tex
+\begin{lstlisting}
+def foo(x):
+    """Do something interesting"""
+    return x**x
+\end{lstlisting}
+```
+
+Alternatively, if you've got a file already that you want include, you can input
+it. Optionally specifying line numbers and language.
+
+```tex
+\lstinputlisting[language=Octave, firstline=2, lastline=12]{BitXorMatrix.m}
+```
+
+With the `lstlisting` environment, you can also add a caption or language.
+
+```tex
+\begin{lstlisting}[language=Python, caption=Python example]
+...
+
+\end{lstlisting}
+```
+
+And then you can chuck a *list of listings* (similar to list of figures, etc) at
+the front of your document.
+
+```tex
+\lstlistoflistings
+```
+
+
+## Custom Floats
+
+By default, LaTeX comes with `figure` and `table` as the only floats available,
+although it's fairly trivial to add your own custom ones.
+
+First you need to import the `float` package,
+
+```tex
+\usepackage{float}
+```
+
+Then define your custom float.
+
+```tex
+\floatstyle{ruled}
+\newfloat{program}{thp}{lop}
+\floatname{program}{Program}
+```
+
+And use it,
+
+```tex
+\begin{program}
+  \begin{verbatim}
+
+class HelloWorldApp {
+  public static void main(String[] args) {
+    //Display the string
+    System.out.println("Hello World!");
+  }
+}
+\end{verbatim}
+  \caption{The Hello World! program in Java.}
+\end{program}
+```
+
+From the LaTeX wikibook:
+
+1. Add `\usepackage{float}` to the preamble of your document
+2. Declare your new float using: `\newfloat{type}{placement}{ext}[outer counter]`,
+   where:
+    * **type** - the new name you wish to call your float, in this instance, 'program'.
+    * **placement** - t, b, p, or h (as previously described in Placement), where
+      letters enumerate permitted placements.
+    * **ext** - the file name extension of an auxiliary file for the list of
+      figures (or whatever). Latex writes the captions to this file.
+    * **outer counter** - the presence of this parameter indicates that the
+      counter associated with this new float should depend on outer counter, for
+      example 'chapter'.
+3. The default name that appears at the start of the caption is the type. If you
+   wish to alter this, use `\floatname{type}{floatname}`.
+4. Changing float style can be issued with `\floatstyle{style}` (Works on all
+   subsequent `\newfloat` commands, therefore, must be inserted before
+   `\newfloat` to be effective).
+    * **plain** - the normal style for Latex floats, but the caption is always
+      below the content.
+    * **plaintop** - the normal style for Latex floats, but the caption is
+      always above the content.
+    * **boxed** - a box is drawn that surrounds the float, and the caption is
+      printed below.
+    * **ruled** - the caption appears above the float, with rules immediately
+      above and below. Then the float contents, followed by a final horizontal rule.
+
+
+[refs]: http://sites.stat.psu.edu/~surajit/present/bib.htm
+[dot_bib]: https://www.andy-roberts.net/res/writing/latex/bibentries.pdf
