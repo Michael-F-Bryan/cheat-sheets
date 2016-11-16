@@ -9,5 +9,6 @@
 - [Rust](./Rust/index.md)
     - [Using Rust outside Rust](./Rust/rust_interop.md)
     - [Emails and Templates](./Rust/emails_and_templates.md)
+    - [Best Practices](./Rust/best_practices.md)
 - [Testing In C](./testing_in_c.md)
 - [LaTeX Snippets](./latex.md)

@@ -5,7 +5,18 @@ same as C, sometimes faster) and want to call it from a slower language like
 Python or Ruby, it's actually pretty easy to do. If you can run C code, you
 can also run Rust.
 
-## Original function
+## Quick Links
+
+For those too lazy to scroll:
+
+* [Original Function](Rust/rust_interop.html#Original%20Function)
+* [C](Rust/rust_interop.html#C)
+* [Lua](Rust/rust_interop.html#Lua)
+* [Python](Rust/rust_interop.html#Python)
+* [Golang](Rust/rust_interop.html#Golang)
+
+
+## Original Function
 
 We're going to make a contrived example to check if a number is prime.
 
@@ -102,7 +113,7 @@ $ gcc main.c -L. -lprime
   > but which never actually gets used.
 
 
-# Lua
+## Lua
 
 Next is calling our `Rust` code from `Lua`. `Lua` is a super light-weight
 language (about 10,000 lines of C)  often used for embedding into applications

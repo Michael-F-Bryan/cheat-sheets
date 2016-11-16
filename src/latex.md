@@ -111,6 +111,26 @@ To embed a PDF as one of your appendices, you can use the `pdfpages` package:
 ```
 
 
+## Footnotes
+
+Adding footnotes is pretty straightforward.
+
+```tex
+I'm writing something here to test \footnote{footnotes working fine}
+several features.
+```
+
+Or if you have a particularly long footnote, you can insert a `\footnotemark`
+and then write the footnote itself at the bottom of your paragraph.
+
+```tex
+I'm writing something here to test \footnote[10]{footnotes working fine}
+several features. You can write the footnote text\footnotemark in its
+own line.
+\footnotetext{Second footnote}
+```
+
+
 ## Nomenclature
 
 A nomenclature works pretty much the same way as index entries.
@@ -180,9 +200,9 @@ styles, and [this page][dot_bib] for the various fields and entry types for your
 
 I've got a pair of templates I use for pretty much everything.
 
-* [General report template](./lab_report_template.tex)
-* [Cover Sheet](./cover_page_template.tex)
-
+* [General report template](https://github.com/Michael-F-Bryan/cheat-sheets/blob/master/src/lab_report_template.tex
+)
+* [Cover Sheet](https://github.com/Michael-F-Bryan/cheat-sheets/blob/master/src/cover_page_template.tex)
 
 ## Code Listings
 
@@ -288,6 +308,8 @@ From the LaTeX wikibook:
       printed below.
     * **ruled** - the caption appears above the float, with rules immediately
       above and below. Then the float contents, followed by a final horizontal rule.
+
+
 
 
 [refs]: http://sites.stat.psu.edu/~surajit/present/bib.htm
