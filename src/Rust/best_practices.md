@@ -102,10 +102,10 @@ couple extra lints to your crate.
     unstable_features,
     unused_import_braces,
     unused_qualifications,
-    unused-extern-crates,
-    unused-results,
-    variant-size-differences)]
-    ```
+    unused_extern_crates,
+    unused_results,
+    variant_size_differences)]
+```
 
 
 ## Continuous Integration
