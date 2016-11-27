@@ -105,12 +105,11 @@ file:
 $ gcc main.c -L. -lprime
 ```
 
-  > **Note:** because of a compiler bug at the time, because the std library isn't
+  > **Note:** because of a compiler bug at the time and the std library isn't
   > being used directly, it isn't linked in when `rustc` creates our shared
   > object. Unfortunately, a couple things were indirectly needed from the std
   > library so I was getting linker errors later on. The fix was to add a dummy
-  > function which uses something from the std library (e.g. a print statement)
-  > but which never actually gets used.
+  > function which uses something from the std library (e.g. a print statement).
 
 
 ## Lua
