@@ -1,6 +1,7 @@
 # Summary
 
 - [Using this Document](./using-the-wiki.md)
+- [Checklist For New Projects](./new-projects.md)
 - [JavaScript](./JavaScript/javascript.md)
 - [Docker](./docker-images.md)
 - [Python](./Python/index.md)
