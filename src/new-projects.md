@@ -92,8 +92,11 @@ The checklist for this section is pretty short:
 
 There's a common saying in software, *"If it's not tested, it's broken"*. If you
 can't prove to yourself that your project works as expected, then it's
-effectively just running on dreams and wishful thinking. As such, testing of
-some kind is necessary.
+effectively just running on dreams and wishful thinking.
+
+Or, put differently, not having automated tests for a big project is kinda like
+a chef preparing an expensive meal and then serving it to the customer without
+having tasted it to see if it's edible.
 
 Most peoples' first thought is that whenever they change something they'll just
 run the program again and manually check everything works as it should. Not only
