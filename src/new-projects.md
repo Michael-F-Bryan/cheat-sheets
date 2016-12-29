@@ -58,8 +58,28 @@ single commit with an associated commit message written by the developer
 explaining those changes and the rationale behind them. It also allows you to
 track exactly who did what and when.
 
-TODO: Add notes about using GitHub and GitLab for tracking issues, milestones,
-etc.
+Tools like [GitHub](https://github.com/) and [GitLab](https://gitlab.com) are
+awesome. They provide a central place for your project's repository and several
+useful tools for managing a project. One of the most under-rated of these is
+the use of issues. Issues are a way to track bugs and features in your project,
+as well as who is in charge of fixing something, extra comments and discussion
+related to that issue, and much more. It's a much better system than someone
+going up to a developer and verbally telling them about something that needs
+fixing as it enforces using a disciplined way of tracking and discussing an
+issue. Also, the act of writing down a problem helps people to properly explain
+the issue at hand, converting something like "Feature X doesn't work like it
+should" into "When I used feature X, I expected A to happen. Instead, I got B".
+
+You are also given the ability to group issues into milestones. This allows
+teams to relate specific issues to a particular high level goal and keep
+everything under the same system.
+
+GitHub and GitLab are largely identical in functionality. The main difference is
+that GitHub is a service hosted by the GitHub company and is more targeted
+towards open source projects, whereas GitLab allows you to run your own private
+GitLab server on your own hardware. Which is more desirable for a commercial
+project where you don't want to be sharing your product's internals with the
+world.
 
 The checklist for this section is pretty short:
 
