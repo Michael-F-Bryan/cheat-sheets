@@ -7,8 +7,10 @@ explaining some of the common things I've done.
 [![Build Status](https://travis-ci.org/Michael-F-Bryan/cheat-sheets.svg?branch=master)](https://travis-ci.org/Michael-F-Bryan/cheat-sheets)
 
 `travis-ci` rebuilds the cheat sheets every time I make a commit, so you can
-view the latest version [here](https://michael-f-bryan.github.io/cheat-sheets/).
+view the latest version [here][site].
 
+If you are interested in seeing the project's source repository, it's
+[all on GitHub][repo].
 
 Usage
 -----
@@ -60,3 +62,5 @@ For more information on how to use `mdbook`, consult the
 
 [mdbook]: http://azerupi.github.io/mdBook/README.html
 [rustup]: https://rustup.rs/
+[repo]: https://github.com/Michael-F-Bryan/cheat-sheets
+[site]: https://michael-f-bryan.github.io/cheat-sheets/

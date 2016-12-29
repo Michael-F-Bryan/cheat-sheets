@@ -148,7 +148,7 @@ commit, builds your program, then runs its test suite.
 Setting this up is super easy. In GitLab you'll enter the URL of your CI server
 and tell it what events to listen for.
 
-![Webhooks in GitLab](./webhooks.png)
+![Webhooks in GitLab](https://github.com/Michael-F-Bryan/cheat-sheets/raw/master/src/webhooks.png)
 
 As such, the checklist for this section is also a short one:
 
