@@ -87,6 +87,14 @@ And in LaTeX:
 \end{table}
 ```
 
+To have the equations numbered according to their section (i.e. 1.1, 2.4, etc)
+instead of using a globally incrementing counter (i.e. 1, 2, 3 etc) use the
+`numberswithin` command:
+
+```tex
+\numberwithin{equation}{section}
+```
+
 
 ## Appendices
 
