@@ -27,7 +27,7 @@ control.
 First you'll need the `amsmath` package:
 
 ```tex
-\usepackage{amsmath}  
+\usepackage{amsmath}
 ```
 
 Then you can enter math like normal, separating each line with `\\`. You can
@@ -78,7 +78,7 @@ with open('data_table.tex', 'w') as f:
 And in LaTeX:
 
 ```tex
-\usepackage{booktabs}           
+\usepackage{booktabs}
 ...
 
 \begin{table}[h]
@@ -93,6 +93,19 @@ instead of using a globally incrementing counter (i.e. 1, 2, 3 etc) use the
 
 ```tex
 \numberwithin{equation}{section}
+```
+
+
+### Table from CSV
+
+You can insert tables from a csv using the [csvsimple] package and then just
+ask it to do all the hard stuff for generating the table.
+
+```
+\usepackage{csvsimple}
+...
+
+\csvautotabular{scientists.csv}
 ```
 
 
@@ -141,6 +154,8 @@ own line.
 
 ## Nomenclature
 
+([more info](https://www.sharelatex.com/learn/Nomenclatures))
+
 A nomenclature works pretty much the same way as index entries.
 
 First you need to import the package and let it do some setup stuff:
@@ -161,6 +176,33 @@ And finally tell LaTeX to print the nomenclature:
 
 ```tex
 \printnomenclature
+```
+
+If you are using `latexmk` to build your document you need to tell it to do an
+extra run to generate the nomenclature index. Add this to your `~/.latexmkrc`:
+
+```
+# Custom dependency and function for nomencl package
+add_cus_dep( 'nlo', 'nls', 0, 'makenlo2nls' );
+sub makenlo2nls {
+    system( "makeindex -s nomencl.ist -o \"$_[0].nls\" \"$_[0].nlo\"" );
+}
+```
+
+You can add units by defining this macro in your preamble:
+
+```
+\newcommand{\nomunit}[1]{%
+\renewcommand{\nomentryend}{\hspace*{\fill}#1}}
+```
+
+Then just include `\nomunit{}` in a description whenever you want to add units.
+
+```
+...
+\nomenclature{$c$}{Speed of light in a vacuum inertial system
+  \nomunit{$299,792,458\, m/s$}}
+...
 ```
 
 
