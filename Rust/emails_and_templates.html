@@ -1,0 +1,258 @@
+<!DOCTYPE HTML>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title></title>
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <base href="../">
+
+        <link rel="stylesheet" href="book.css">
+        <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+
+        <link rel="shortcut icon" href="favicon.png">
+
+        <!-- Font Awesome -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+
+        <!-- MathJax -->
+        <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+        <!-- Fetch JQuery from CDN but have a local fallback -->
+        <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+        <script>
+            if (typeof jQuery == 'undefined') {
+                document.write(unescape("%3Cscript src='jquery.js'%3E%3C/script%3E"));
+            }
+        </script>
+    </head>
+    <body class="light">
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme = localStorage.getItem('theme');
+            if (theme == null) { theme = 'light'; }
+            $('body').removeClass().addClass(theme);
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var sidebar = localStorage.getItem('sidebar');
+            if (sidebar === "hidden") { $("html").addClass("sidebar-hidden") }
+            else if (sidebar === "visible") { $("html").addClass("sidebar-visible") }
+        </script>
+
+        <div id="sidebar" class="sidebar">
+            <ul class="chapter"><li><a href="./using-the-wiki.html"><strong>1.</strong> Using this Document</a></li><li><a href="./new-projects.html"><strong>2.</strong> Checklist For New Projects</a></li><li><a href="./JavaScript/javascript.html"><strong>3.</strong> JavaScript</a></li><li><a href="./docker-images.html"><strong>4.</strong> Docker</a></li><li><a href="./Python/index.html"><strong>5.</strong> Python</a></li><li><ul class="section"><li><a href="./Python/sqlalchemy.html"><strong>5.1.</strong> SqlAlchemy</a></li></ul></li><li><a href="./basic-server-setup.html"><strong>6.</strong> Basic Server Setup</a></li><li><a href="./Rust/index.html"><strong>7.</strong> Rust</a></li><li><ul class="section"><li><a href="./Rust/rust_interop.html"><strong>7.1.</strong> Using Rust outside Rust</a></li><li><a href="./Rust/emails_and_templates.html" class="active"><strong>7.2.</strong> Emails and Templates</a></li><li><a href="./Rust/best_practices.html"><strong>7.3.</strong> Best Practices</a></li></ul></li><li><a href="./testing_in_c.html"><strong>8.</strong> Testing In C</a></li><li><a href="./latex.html"><strong>9.</strong> LaTeX Snippets</a></li></ul>
+        </div>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar" class="menu-bar">
+                    <div class="left-buttons">
+                        <i id="sidebar-toggle" class="fa fa-bars"></i>
+                        <i id="theme-toggle" class="fa fa-paint-brush"></i>
+                    </div>
+
+                    <h1 class="menu-title"></h1>
+
+                    <div class="right-buttons">
+                        <i id="print-button" class="fa fa-print" title="Print this book"></i>
+                    </div>
+                </div>
+
+                <div id="content" class="content">
+                    <h1>Emails and Templates</h1>
+<p>Consider this hypothetical situation; you're at work and your boss walks up to
+you saying you need to send out emails to each of your (100+) clients, and
+they all need to be personalised for marketing purposes.</p>
+<p>It turns out that this is actually a pretty easy job to do in Rust. Normally
+Rust is a systems programming language, but it has enough zero cost abstractions
+and high level features that templating and emails in Rust are about as easy
+to do as they are in Python.</p>
+<p>For this exercise, we'll be needing two crates:</p>
+<ul>
+<li><a href="https://github.com/lettre/lettre">lettre</a> for sending emails, and</li>
+<li><a href="https://github.com/Keats/tera">tera</a> for Django/Jinja2 style templating</li>
+</ul>
+<p>First create a new executable,</p>
+<pre><code>cargo new --bin spammer
+</code></pre>
+<p>And add the dependencies to your <code>Cargo.toml</code>,</p>
+<pre><code>[dependencies]
+tera = &quot;*&quot;
+lettre = &quot;*&quot;
+</code></pre>
+<h2>Writing Templates</h2>
+<p>If you've ever done templating in Python before, the template syntax will be
+pretty familiar. Basically, when you render the template you'll pass it a
+<code>Context</code> (essentially just a dictionary) that contains all the variables and
+data you want to substitute into your template.</p>
+<p>The template itself is just a file that sits on disk somewhere.</p>
+<pre><code>$ cat ./emails.txt
+Hello {{ name }},
+
+You have been a client of ours for {{ years_as_client }}, thank you for
+choosing us and we hope to continue having a great relationship into the future.
+
+Kind Regards,
+{{ sender }}
+</code></pre>
+<p>Creating a context and populating it isn't too difficult. You just call the
+<code>add()</code> method and give it the key, plus a pointer to whatever you're wanting to
+substitute in.</p>
+<pre><code class="language-rust">let mut context = Context::new();
+context.add(&quot;name&quot;, &amp;name);
+context.add(&quot;years_as_client&quot;, &amp;normalized_duration);
+context.add(&quot;sender&quot;, &amp;sender);
+</code></pre>
+<p>You also need to create a <code>Tera</code> object. Think of this as just a rendering
+engine. It needs to know which templates you're wanting to use (I'm using the
+<code>env!()</code> macro here to embed the location of the project directory at compile
+time).</p>
+<pre><code class="language-rust">let project_root = env!(&quot;CARGO_MANIFEST_DIR&quot;);
+let templates = format!(&quot;{}/*.txt&quot;, project_root);
+let tera = Tera::new(&amp;templates);
+</code></pre>
+<p>Then rendering the templates is as simple as iterating through your clients and
+telling <code>tera</code> to render the template. To make life easier, I pulled the
+template construction out into its own function.</p>
+<pre><code class="language-rust">fn main() {
+    ...
+
+    for (name, years_as_client) in clients {
+        let text = format_email(&amp;tera, name, years_as_client, sender).unwrap();
+        println!(&quot;-----&quot;);
+        println!(&quot;{}&quot;, text);
+    }
+
+    ...
+}
+
+fn format_email(tera: &amp;Tera, name: &amp;str, years_as_client: u32, sender: &amp;str) -&gt; TeraResult&lt;String&gt; {
+    let normalized_duration = if years_as_client == 1 {
+        String::from(&quot;1 year&quot;)
+    } else {
+        format!(&quot;{} years&quot;, years_as_client)
+    };
+
+    let mut context = Context::new();
+    context.add(&quot;name&quot;, &amp;name);
+    context.add(&quot;years_as_client&quot;, &amp;normalized_duration);
+    context.add(&quot;sender&quot;, &amp;sender);
+
+    tera.render(&quot;email.txt&quot;, context)
+}
+</code></pre>
+<h2>Sending Emails</h2>
+<p>Constructing and sending emails using <a href="https://github.com/lettre/lettre">lettre</a> is just as easy.</p>
+<p>First you'll construct the email (copied straight from their docs):</p>
+<pre><code class="language-rust">use lettre::email::EmailBuilder;
+
+// Create an email
+let email = EmailBuilder::new()
+    // Addresses can be specified by the tuple (email, alias)
+    .to((client_email, client_name))
+    .from(sender_email)
+    .subject(&quot;Hi, Hello world&quot;)
+    .text(text)
+    .build();
+
+assert!(email.is_ok());
+</code></pre>
+<p>Sending emails is also fairly easy, here's a fairly detailed example (again,
+pulled straight from the docs):</p>
+<pre><code class="language-rust">use lettre::email::EmailBuilder;
+use lettre::transport::smtp::{SecurityLevel, SmtpTransport,
+SmtpTransportBuilder};
+use lettre::transport::smtp::authentication::Mechanism;
+use lettre::transport::smtp::SUBMISSION_PORT;
+use lettre::transport::EmailTransport;
+
+let email = EmailBuilder::new()
+                    .to(&quot;root@localhost&quot;)
+                    .from(&quot;user@localhost&quot;)
+                    .body(&quot;Hello World!&quot;)
+                    .subject(&quot;Hello&quot;)
+                    .build()
+                    .unwrap();
+
+// Connect to a remote server on a custom port
+let mut mailer = SmtpTransportBuilder::new((&quot;server.tld&quot;,
+SUBMISSION_PORT)).unwrap()
+    // Set the name sent during EHLO/HELO, default is `localhost`
+    .hello_name(&quot;my.hostname.tld&quot;)
+    // Add credentials for authentication
+    .credentials(&quot;username&quot;, &quot;password&quot;)
+    // Specify a TLS security level. You can also specify an SslContext with
+    // .ssl_context(SslContext::Ssl23)
+    .security_level(SecurityLevel::AlwaysEncrypt)
+    // Enable SMTPUTF8 if the server supports it
+    .smtp_utf8(true)
+    // Configure expected authentication mechanism
+    .authentication_mechanism(Mechanism::CramMd5)
+    // Enable connection reuse
+    .connection_reuse(true).build();
+
+let result_1 = mailer.send(email.clone());
+assert!(result_1.is_ok());
+
+// The second email will use the same connection
+let result_2 = mailer.send(email);
+assert!(result_2.is_ok());
+
+// Explicitly close the SMTP transaction as we enabled connection reuse
+mailer.close();
+</code></pre>
+
+                </div>
+
+                <!-- Mobile navigation buttons -->
+                
+                    <a href="./Rust/rust_interop.html" class="mobile-nav-chapters previous">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                
+
+                
+                    <a href="./Rust/best_practices.html" class="mobile-nav-chapters next">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+                
+
+            </div>
+
+            
+                <a href="./Rust/rust_interop.html" class="nav-chapters previous" title="You can navigate through the chapters using the arrow keys">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+            
+
+            
+                <a href="./Rust/best_practices.html" class="nav-chapters next" title="You can navigate through the chapters using the arrow keys">
+                    <i class="fa fa-angle-right"></i>
+                </a>
+            
+
+        </div>
+
+
+        <!-- Local fallback for Font Awesome -->
+        <script>
+            if ($(".fa").css("font-family") !== "FontAwesome") {
+                $('<link rel="stylesheet" type="text/css" href="_FontAwesome/css/font-awesome.css">').prependTo('head');
+            }
+        </script>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        
+
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+    </body>
+</html>

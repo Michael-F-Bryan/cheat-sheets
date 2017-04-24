@@ -1,0 +1,223 @@
+<!DOCTYPE HTML>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title></title>
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <base href="">
+
+        <link rel="stylesheet" href="book.css">
+        <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+
+        <link rel="shortcut icon" href="favicon.png">
+
+        <!-- Font Awesome -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+
+        <!-- MathJax -->
+        <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+        <!-- Fetch JQuery from CDN but have a local fallback -->
+        <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+        <script>
+            if (typeof jQuery == 'undefined') {
+                document.write(unescape("%3Cscript src='jquery.js'%3E%3C/script%3E"));
+            }
+        </script>
+    </head>
+    <body class="light">
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme = localStorage.getItem('theme');
+            if (theme == null) { theme = 'light'; }
+            $('body').removeClass().addClass(theme);
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var sidebar = localStorage.getItem('sidebar');
+            if (sidebar === "hidden") { $("html").addClass("sidebar-hidden") }
+            else if (sidebar === "visible") { $("html").addClass("sidebar-visible") }
+        </script>
+
+        <div id="sidebar" class="sidebar">
+            <ul class="chapter"><li><a href="./using-the-wiki.html"><strong>1.</strong> Using this Document</a></li><li><a href="./new-projects.html"><strong>2.</strong> Checklist For New Projects</a></li><li><a href="./JavaScript/javascript.html"><strong>3.</strong> JavaScript</a></li><li><a href="./docker-images.html"><strong>4.</strong> Docker</a></li><li><a href="./Python/index.html"><strong>5.</strong> Python</a></li><li><ul class="section"><li><a href="./Python/sqlalchemy.html"><strong>5.1.</strong> SqlAlchemy</a></li></ul></li><li><a href="./basic-server-setup.html"><strong>6.</strong> Basic Server Setup</a></li><li><a href="./Rust/index.html"><strong>7.</strong> Rust</a></li><li><ul class="section"><li><a href="./Rust/rust_interop.html"><strong>7.1.</strong> Using Rust outside Rust</a></li><li><a href="./Rust/emails_and_templates.html"><strong>7.2.</strong> Emails and Templates</a></li><li><a href="./Rust/best_practices.html"><strong>7.3.</strong> Best Practices</a></li></ul></li><li><a href="./testing_in_c.html" class="active"><strong>8.</strong> Testing In C</a></li><li><a href="./latex.html"><strong>9.</strong> LaTeX Snippets</a></li></ul>
+        </div>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar" class="menu-bar">
+                    <div class="left-buttons">
+                        <i id="sidebar-toggle" class="fa fa-bars"></i>
+                        <i id="theme-toggle" class="fa fa-paint-brush"></i>
+                    </div>
+
+                    <h1 class="menu-title"></h1>
+
+                    <div class="right-buttons">
+                        <i id="print-button" class="fa fa-print" title="Print this book"></i>
+                    </div>
+                </div>
+
+                <div id="content" class="content">
+                    <h1>Testing in C</h1>
+<p>Recently I had the opportunity to help out a friend who was working on an
+assignment using C and found some nice patterns to do TDD-style development in
+a language that traditionally makes that a nightmare. So I thought I'd write
+down my thoughts in case I need to do anything similar in the future.</p>
+<p>The first job is to create a <code>test.c</code> file which can be compiled into an
+executable and run.</p>
+<p>The <code>main()</code> function consists of one function call, the call to our test
+runner. The test runner will go through all our tests, run them, and then print
+to the screen whether it was a success or not.</p>
+<p>The general skeleton looks like this:</p>
+<pre><code class="language-c">#define TRUE 1
+#define FALSE 0
+
+void run_tests() {
+  test(&quot;constructor&quot;, test_new_list);
+  test(&quot;push&quot;, test_push);
+  test(&quot;pop&quot;, test_pop);
+  test(&quot;len&quot;, test_len);
+  test(&quot;destructor&quot;, test_destructor);
+}
+
+int main()
+{
+  run_tests();
+  return 0;
+}
+</code></pre>
+<p>If you are familiar with <code>C</code>, then you'll probably know that something's a
+little odd here. The <code>test()</code> &quot;function&quot; is actually taking in the name of a
+test and then a reference to a function, however C doesn't actually allow
+referencing functions and passing them around (not easily anyway).</p>
+<p><code>test()</code> is actually a macro who's definition looks like this:</p>
+<pre><code class="language-c">// Make a `test` macro which will automatically run our tests and print
+// a tick if it was successful. Otherwise it prints a cross.
+#define test(name, function_call) \
+          printf(&quot;testing %s... &quot;, name); \
+          if(function_call()) { \
+            printf(&quot;passed \u2714\n&quot;); \
+          } else { \
+            printf(&quot;failed \u2718\n&quot;); \
+          }
+</code></pre>
+<p>All the <code>test()</code> macro does is print &quot;testing foo...&quot;, then it'll run the
+test and as long as its return value is true, it'll print &quot;passed ✔&quot;. If it
+fails, you'll see &quot;failed ✘&quot;.</p>
+<p>When we run the test executable, this is the output you get:</p>
+<pre><code>testing constructor... passed ✔
+testing push... passed ✔
+testing pop... passed ✔
+testing len... passed ✔
+testing destructor... passed ✔
+</code></pre>
+<p>The key part here is how each test is constructed. Basically, you'll set up
+your inputs, run whatever function you are testing, then <code>assert()</code> that the
+outputs are what you expect. If the function returns <code>TRUE</code> then the test
+passed and if the function returns <code>FALSE</code> then it failed.</p>
+<p>The <code>assert()</code> macro is a really simple macro that just expands to check if
+the expression passed into it is <code>FALSE</code>. If it is, then return <code>FALSE</code>,
+otherwise just continue like normal.</p>
+<pre><code class="language-c">// Define an assert macro which will test an expression and return FALSE
+// if it is not true.
+#define assert(expr) \
+if((expr) == FALSE) { \
+  return FALSE; \
+}
+</code></pre>
+<p>Here's an example where we are checking that a <code>len()</code> function for finding the
+length of a linked list works correctly.</p>
+<pre><code class="language-c">int test_len() {
+  Node \*head = new_list(0);
+
+  assert(len(head) == 1);
+
+  // Add a bunch of stuff to the list and make sure length changes
+  // appropriately
+  int values[] = {1, 2, 3, 4, 5};
+  for (int i=0; i &lt; 5; i++) {
+    head = push(head, values[i]);
+  }
+  assert(len(head) == 6);
+
+  return TRUE;
+}
+</code></pre>
+<p>Invoking all of this is actually pretty easy to do. What you'll do is pull out
+all of your functions and other bits and pieces into their own library, then
+when compiling test, you just link that in and you've got access to everything
+you need for testing.</p>
+<p>Then just add the corresponding section to your Makefile and you're done.</p>
+<p>Along the way, I found that I was often needing to repeat boring setup code,
+so I would pull this out into its own function. For example, here's a function
+which takes in an array and its length, and returns a linked list with all the
+array's elements added.</p>
+<pre><code class="language-c">// Given an array of values, create a new list from them (note: list is
+// reversed)
+Node* make_list(int values[], int length) {
+  Node \*head = new_list(values[0]);
+  for (int i=1; i&lt;length; i++) {
+    head = push(head, values[i]);
+  }
+
+  return head;
+}
+</code></pre>
+<p>Little helper functions like these often make a world of difference when doing
+testing and TDD.</p>
+
+                </div>
+
+                <!-- Mobile navigation buttons -->
+                
+                    <a href="./Rust/best_practices.html" class="mobile-nav-chapters previous">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                
+
+                
+                    <a href="./latex.html" class="mobile-nav-chapters next">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+                
+
+            </div>
+
+            
+                <a href="./Rust/best_practices.html" class="nav-chapters previous" title="You can navigate through the chapters using the arrow keys">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+            
+
+            
+                <a href="./latex.html" class="nav-chapters next" title="You can navigate through the chapters using the arrow keys">
+                    <i class="fa fa-angle-right"></i>
+                </a>
+            
+
+        </div>
+
+
+        <!-- Local fallback for Font Awesome -->
+        <script>
+            if ($(".fa").css("font-family") !== "FontAwesome") {
+                $('<link rel="stylesheet" type="text/css" href="_FontAwesome/css/font-awesome.css">').prependTo('head');
+            }
+        </script>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        
+
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+    </body>
+</html>

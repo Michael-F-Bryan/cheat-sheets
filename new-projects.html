@@ -1,0 +1,270 @@
+<!DOCTYPE HTML>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title></title>
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <base href="">
+
+        <link rel="stylesheet" href="book.css">
+        <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+
+        <link rel="shortcut icon" href="favicon.png">
+
+        <!-- Font Awesome -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+
+        <!-- MathJax -->
+        <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+        <!-- Fetch JQuery from CDN but have a local fallback -->
+        <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+        <script>
+            if (typeof jQuery == 'undefined') {
+                document.write(unescape("%3Cscript src='jquery.js'%3E%3C/script%3E"));
+            }
+        </script>
+    </head>
+    <body class="light">
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme = localStorage.getItem('theme');
+            if (theme == null) { theme = 'light'; }
+            $('body').removeClass().addClass(theme);
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var sidebar = localStorage.getItem('sidebar');
+            if (sidebar === "hidden") { $("html").addClass("sidebar-hidden") }
+            else if (sidebar === "visible") { $("html").addClass("sidebar-visible") }
+        </script>
+
+        <div id="sidebar" class="sidebar">
+            <ul class="chapter"><li><a href="./using-the-wiki.html"><strong>1.</strong> Using this Document</a></li><li><a href="./new-projects.html" class="active"><strong>2.</strong> Checklist For New Projects</a></li><li><a href="./JavaScript/javascript.html"><strong>3.</strong> JavaScript</a></li><li><a href="./docker-images.html"><strong>4.</strong> Docker</a></li><li><a href="./Python/index.html"><strong>5.</strong> Python</a></li><li><ul class="section"><li><a href="./Python/sqlalchemy.html"><strong>5.1.</strong> SqlAlchemy</a></li></ul></li><li><a href="./basic-server-setup.html"><strong>6.</strong> Basic Server Setup</a></li><li><a href="./Rust/index.html"><strong>7.</strong> Rust</a></li><li><ul class="section"><li><a href="./Rust/rust_interop.html"><strong>7.1.</strong> Using Rust outside Rust</a></li><li><a href="./Rust/emails_and_templates.html"><strong>7.2.</strong> Emails and Templates</a></li><li><a href="./Rust/best_practices.html"><strong>7.3.</strong> Best Practices</a></li></ul></li><li><a href="./testing_in_c.html"><strong>8.</strong> Testing In C</a></li><li><a href="./latex.html"><strong>9.</strong> LaTeX Snippets</a></li></ul>
+        </div>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar" class="menu-bar">
+                    <div class="left-buttons">
+                        <i id="sidebar-toggle" class="fa fa-bars"></i>
+                        <i id="theme-toggle" class="fa fa-paint-brush"></i>
+                    </div>
+
+                    <h1 class="menu-title"></h1>
+
+                    <div class="right-buttons">
+                        <i id="print-button" class="fa fa-print" title="Print this book"></i>
+                    </div>
+                </div>
+
+                <div id="content" class="content">
+                    <h1>Guideline For Creating A New Project</h1>
+<p>Here's a basic checklist I use when creating a new project to make sure it's
+easy for people to get started (or when you come back in a couple months time).</p>
+<p>For even medium sized projects I would consider all of these points to be
+mandatory. Not only do they enforce good practice, but it also makes it <strong>a lot</strong>
+easier for new people to start contributing quickly and also gives you the
+flexibility to adapt to the project's ever-changing requirements.</p>
+<p>I've also tried to add my justification for why each point is necessary, but
+feel free to just skip to the dot points at the end of each section if you want.</p>
+<p>Links:</p>
+<ul>
+<li><a href="#Make%20A%20Good%20Readme">Make A Good Readme</a></li>
+<li><a href="#Automated%20Testing">Automated Testing</a></li>
+<li><a href="#Version%20Control%20and%20GitHub%2fGitLab">Version Control and GitHub/GitLab</a></li>
+<li><a href="#Testing">Testing</a></li>
+<li><a href="#Continuous%20Integration">Continuous Integration</a></li>
+</ul>
+<h2>Make A Good Readme</h2>
+<p>A README is important. It's usually the first thing people will want to read
+when they want to get started, plus it's also what gets shown the moment they
+click on your GitHub project. As such, it's a good idea to put a little effort
+in.</p>
+<p>Here is what I'd consider the bare minimum for a README:</p>
+<ul>
+<li>One liner describing the project and what it does.</li>
+<li>More in-depth description of the project. You could explain the components,
+how it works, why people would use it instead of some alternative, etc.</li>
+<li>How to get a dev environment set up.</li>
+<li>How to get the code, download dependencies, and compile.</li>
+<li>&quot;Hello World&quot; equivalent. This might be as simple as telling them to run
+<code>$ ./my-binary</code>, or a basic code snippet if it's a library.</li>
+<li>Documentation. Where is it and how can I generate a local copy?</li>
+<li>Tests. How do you run the test suite?</li>
+</ul>
+<h2>Version Control and GitHub/GitLab</h2>
+<p>It almost goes without saying, <strong>use version control</strong>. Not using version
+control is kinda like going through the entire project without saving. Then when
+someone wants to make some changes they'll create a copy of this master version,
+do their stuff, then afterwards they manually copy/paste in all their changes.</p>
+<p>This workflow is fine when there's only one (or maybe two, if you're really
+disciplined) people working on a project. However once you throw in multiple
+developers and multiple versions of your project this quickly turns into a
+massive cluster-fuck and becomes impossible to maintain.</p>
+<p>Using version control makes most of these problems go away by using a system
+which enforces the discipline for you. Each set of changes is packaged as a
+single commit with an associated commit message written by the developer
+explaining those changes and the rationale behind them. It also allows you to
+track exactly who did what and when.</p>
+<p>Tools like <a href="https://github.com/">GitHub</a> and <a href="https://gitlab.com">GitLab</a> are
+awesome. They provide a central place for your project's repository and several
+useful tools for managing a project. One of the most under-rated of these is
+the use of issues. Issues are a way to track bugs and features in your project,
+as well as who is in charge of fixing something, extra comments and discussion
+related to that issue, and much more. It's a much better system than someone
+going up to a developer and verbally telling them about something that needs
+fixing as it enforces using a disciplined way of tracking and discussing an
+issue. Also, the act of writing down a problem helps people to properly explain
+the issue at hand, converting something like &quot;Feature X doesn't work like it
+should&quot; into &quot;When I used feature X, I expected A to happen. Instead, I got B&quot;.</p>
+<p>You are also given the ability to group issues into milestones. This allows
+teams to relate specific issues to a particular high level goal and keep
+everything under the same system.</p>
+<p>GitHub and GitLab are largely identical in functionality. The main difference is
+that GitHub is a service hosted by the GitHub company and is more targeted
+towards open source projects, whereas GitLab allows you to run your own private
+GitLab server on your own hardware. Which is more desirable for a commercial
+project where you don't want to be sharing your product's internals with the
+world.</p>
+<p>The checklist for this section is pretty short:</p>
+<ul>
+<li>Are you using version control?</li>
+<li>Do you use something like GitHub (for open source projects) or a private
+GitLab (commercial projects) to track issues and manage the repository?</li>
+</ul>
+<h2>Testing</h2>
+<p>There's a common saying in software, <em>&quot;If it's not tested, it's broken&quot;</em>. If you
+can't prove to yourself that your project works as expected, then it's
+effectively just running on dreams and wishful thinking.</p>
+<p>Or, put differently, not having automated tests for a big project is kinda like
+a chef preparing an expensive meal and then serving it to the customer without
+having tasted it to see if it's edible.</p>
+<p>Most peoples' first thought is that whenever they change something they'll just
+run the program again and manually check everything works as it should. Not only
+is this a fairly hands-on process, often requiring you to click through a bunch
+of windows or menus to get to the thing you just changed, but you often end up
+mindlessly trying different combinations of inputs to ensure all the edge
+conditions are covered. Also, don't forget that by changing one thing you could
+have created a subtle bug elsewhere in the program, so you should really check
+all that too.</p>
+<p>As you can imagine, after a couple of these manual testing cycles a normal
+human will start to get bored and skip the testing phase, telling themselves
+&quot;it's okay, I know what I'm doing so there's no way I could have made a bug&quot;.</p>
+<p>In reality, checking something using a list of inputs is something computers
+excel at. So why spend 10 minutes manually checking something after each change
+when you might spend 20 minutes writing a test <strong>once</strong>, then after every change
+testing the entire program can be done in a couple hundred milliseconds. The
+numbers should speak for themselves.</p>
+<p>Automated tests are also invaluable for situations when you may not have
+everything you need to do the manual testing. For example, when doing the
+telemetry software for CMT we only actually had a working race car in the last
+month, and the hardware side of telemetry was only working a couple days before
+comp. Without having my automated test suite to ensure everything worked as
+expected beforehand, I wouldn't have been able to start until a couple days
+before comp, because I would have made the entire system up til then on top of
+optimism and wishful thinking.</p>
+<ul>
+<li>Does the project have a test suite?</li>
+<li>Can I run this test suite with a single click of a button (or with a single
+super basic command like <code>make test</code>)?</li>
+<li>Does my test suite cover most of the project's use cases?</li>
+<li>Are there unit tests for testing individual chunks of functionality?</li>
+<li>Are there some end-to-end tests which exercise the project in its entirety and
+ensure all the components work together correctly?</li>
+</ul>
+<h2>Continuous Integration</h2>
+<p>CI is cool. It means you'll do a change, push it to your version control, then
+that automatically kicks off a server to download your project, build it, and
+run your entire test suite. Then if your last commit broke anything it'll let
+you know.</p>
+<p>If everything passes you can even set things up so that the continuous
+integration server will package your project up and create a new release.</p>
+<blockquote>
+<p>Imagine this scenario; you come into work to find out that there's a new bug.
+You first create a test to reproduce the bug, then write the code to fix it.
+When the test finally passes on your local machine you commit your code and
+push it up to your central repository. Your continuous integration system
+notices the change and runs all your tests against the new code but finds that
+your new fix breaks some existing functionality (for example, it broke a
+Windows-specific feature but you didn't notice because you work on a Mac).
+The CI server immediately sends you an email letting you know what happened,
+you fix the existing feature and then push up the final code. Your CI server
+then runs everything again, finds that nothing is broken, and then automatically
+creates new binaries so that customers can download the fixed version. This
+entire process may have taken a day.</p>
+<p>You can see how the effect of using version control, having automated
+tests, and continuous integration combine to give your business a turn around
+time on the order of days instead of waiting on the usual monthly release
+schedule.</p>
+</blockquote>
+<p>The way continuous integration usually works is through web hooks. Put simply,
+whenever GitHub or GitLab receive a new commit they can be set up to
+automatically send a message to some server. This server then fetches the latest
+commit, builds your program, then runs its test suite.</p>
+<p>Setting this up is super easy. In GitLab you'll enter the URL of your CI server
+and tell it what events to listen for.</p>
+<p><img src="https://github.com/Michael-F-Bryan/cheat-sheets/raw/master/src/webhooks.png" alt="Webhooks in GitLab" /></p>
+<p>As such, the checklist for this section is also a short one:</p>
+<ul>
+<li>Do you have continuous integration set up with GitHub/GitLab?</li>
+<li>Does your CI server run your automated tests on every commit?</li>
+<li>(If Applicable) Does your CI server automatically re-generate your project's
+documentation/</li>
+<li>(Optional) Does your CI server automate the process of pushing new releases?</li>
+</ul>
+
+                </div>
+
+                <!-- Mobile navigation buttons -->
+                
+                    <a href="./using-the-wiki.html" class="mobile-nav-chapters previous">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                
+
+                
+                    <a href="./JavaScript/javascript.html" class="mobile-nav-chapters next">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+                
+
+            </div>
+
+            
+                <a href="./using-the-wiki.html" class="nav-chapters previous" title="You can navigate through the chapters using the arrow keys">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+            
+
+            
+                <a href="./JavaScript/javascript.html" class="nav-chapters next" title="You can navigate through the chapters using the arrow keys">
+                    <i class="fa fa-angle-right"></i>
+                </a>
+            
+
+        </div>
+
+
+        <!-- Local fallback for Font Awesome -->
+        <script>
+            if ($(".fa").css("font-family") !== "FontAwesome") {
+                $('<link rel="stylesheet" type="text/css" href="_FontAwesome/css/font-awesome.css">').prependTo('head');
+            }
+        </script>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        
+
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+    </body>
+</html>

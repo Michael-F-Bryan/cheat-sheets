@@ -1,0 +1,154 @@
+<!DOCTYPE HTML>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title></title>
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <base href="">
+
+        <link rel="stylesheet" href="book.css">
+        <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+
+        <link rel="shortcut icon" href="favicon.png">
+
+        <!-- Font Awesome -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+
+        <!-- MathJax -->
+        <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+        <!-- Fetch JQuery from CDN but have a local fallback -->
+        <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+        <script>
+            if (typeof jQuery == 'undefined') {
+                document.write(unescape("%3Cscript src='jquery.js'%3E%3C/script%3E"));
+            }
+        </script>
+    </head>
+    <body class="light">
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme = localStorage.getItem('theme');
+            if (theme == null) { theme = 'light'; }
+            $('body').removeClass().addClass(theme);
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var sidebar = localStorage.getItem('sidebar');
+            if (sidebar === "hidden") { $("html").addClass("sidebar-hidden") }
+            else if (sidebar === "visible") { $("html").addClass("sidebar-visible") }
+        </script>
+
+        <div id="sidebar" class="sidebar">
+            <ul class="chapter"><li><a href="./using-the-wiki.html" class="active"><strong>1.</strong> Using this Document</a></li><li><a href="./new-projects.html"><strong>2.</strong> Checklist For New Projects</a></li><li><a href="./JavaScript/javascript.html"><strong>3.</strong> JavaScript</a></li><li><a href="./docker-images.html"><strong>4.</strong> Docker</a></li><li><a href="./Python/index.html"><strong>5.</strong> Python</a></li><li><ul class="section"><li><a href="./Python/sqlalchemy.html"><strong>5.1.</strong> SqlAlchemy</a></li></ul></li><li><a href="./basic-server-setup.html"><strong>6.</strong> Basic Server Setup</a></li><li><a href="./Rust/index.html"><strong>7.</strong> Rust</a></li><li><ul class="section"><li><a href="./Rust/rust_interop.html"><strong>7.1.</strong> Using Rust outside Rust</a></li><li><a href="./Rust/emails_and_templates.html"><strong>7.2.</strong> Emails and Templates</a></li><li><a href="./Rust/best_practices.html"><strong>7.3.</strong> Best Practices</a></li></ul></li><li><a href="./testing_in_c.html"><strong>8.</strong> Testing In C</a></li><li><a href="./latex.html"><strong>9.</strong> LaTeX Snippets</a></li></ul>
+        </div>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar" class="menu-bar">
+                    <div class="left-buttons">
+                        <i id="sidebar-toggle" class="fa fa-bars"></i>
+                        <i id="theme-toggle" class="fa fa-paint-brush"></i>
+                    </div>
+
+                    <h1 class="menu-title"></h1>
+
+                    <div class="right-buttons">
+                        <i id="print-button" class="fa fa-print" title="Print this book"></i>
+                    </div>
+                </div>
+
+                <div id="content" class="content">
+                    <h1>Michael's Cheat Sheets</h1>
+<p>A collection of various cheat sheets, code snippets and quick articles
+explaining some of the common things I've done.</p>
+<p><a href="https://travis-ci.org/Michael-F-Bryan/cheat-sheets"><img src="https://travis-ci.org/Michael-F-Bryan/cheat-sheets.svg?branch=master" alt="Build Status" /></a></p>
+<p><code>travis-ci</code> rebuilds the cheat sheets every time I make a commit, so you can
+view the latest version <a href="https://michael-f-bryan.github.io/cheat-sheets/">here</a>.</p>
+<p>If you are interested in seeing the project's source repository, it's
+<a href="https://github.com/Michael-F-Bryan/cheat-sheets">all on GitHub</a>.</p>
+<h2>Usage</h2>
+<p>To generate the pretty html version, you need to have <code>mdbook</code> installed.
+<code>mdbook</code> is a gitbook-like program written in the <code>Rust</code> programming language
+mainly targeted at marking up and presenting documentation. To install it you
+can do</p>
+<pre><code>cargo install mdbook
+</code></pre>
+<p>Then generating the html is as simple as <code>cd</code>-ing to this root directory and
+running</p>
+<pre><code>mdbook build
+</code></pre>
+<p>If you don't have <code>Rust</code> installed, by far the easiest thing to do is get it
+from <a href="https://rustup.rs/">https://rustup.rs/</a>. <code>Rustup</code> is a tool created by the <code>Rust</code>
+developers for managing multiple versions of the <code>Rust</code> compiler at the same
+time, as well as continuously keeping it up to date, and installing alternate
+compilation targets (e.g. so you can effortlessly cross-compile for Android or
+Windows from a Linux machine).</p>
+<p><code>mdbook</code> also has a nice feature where it'll serve your documentation and as
+you are editing it, everything will get regenerated and updated in your browser
+every time a file is saved.</p>
+<pre><code>mdbook serve
+</code></pre>
+<p><code>mdbook</code> expects a directory structure similar to the following:</p>
+<pre><code>.
+├── README.md
+├── src
+|  ├── SUMMARY.md
+|  ├── chapter-1.md
+|  └── ...
+└── book
+   ├── index.html
+   └── ...
+</code></pre>
+<p>When you build the book, all generated html is put in the <code>/book</code> directory
+using the Markdown files in the <code>/src</code> directory according to the contents of
+<code>/src/SUMMARY.md</code>.</p>
+<p>For more information on how to use <code>mdbook</code>, consult the
+<a href="http://azerupi.github.io/mdBook/README.html">documentation</a>.</p>
+
+                </div>
+
+                <!-- Mobile navigation buttons -->
+                
+
+                
+                    <a href="./new-projects.html" class="mobile-nav-chapters next">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+                
+
+            </div>
+
+            
+
+            
+                <a href="./new-projects.html" class="nav-chapters next" title="You can navigate through the chapters using the arrow keys">
+                    <i class="fa fa-angle-right"></i>
+                </a>
+            
+
+        </div>
+
+
+        <!-- Local fallback for Font Awesome -->
+        <script>
+            if ($(".fa").css("font-family") !== "FontAwesome") {
+                $('<link rel="stylesheet" type="text/css" href="_FontAwesome/css/font-awesome.css">').prependTo('head');
+            }
+        </script>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        
+
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+    </body>
+</html>

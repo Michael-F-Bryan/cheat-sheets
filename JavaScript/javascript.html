@@ -1,0 +1,286 @@
+<!DOCTYPE HTML>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title></title>
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <base href="../">
+
+        <link rel="stylesheet" href="book.css">
+        <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+
+        <link rel="shortcut icon" href="favicon.png">
+
+        <!-- Font Awesome -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+
+        <!-- MathJax -->
+        <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+        <!-- Fetch JQuery from CDN but have a local fallback -->
+        <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+        <script>
+            if (typeof jQuery == 'undefined') {
+                document.write(unescape("%3Cscript src='jquery.js'%3E%3C/script%3E"));
+            }
+        </script>
+    </head>
+    <body class="light">
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme = localStorage.getItem('theme');
+            if (theme == null) { theme = 'light'; }
+            $('body').removeClass().addClass(theme);
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var sidebar = localStorage.getItem('sidebar');
+            if (sidebar === "hidden") { $("html").addClass("sidebar-hidden") }
+            else if (sidebar === "visible") { $("html").addClass("sidebar-visible") }
+        </script>
+
+        <div id="sidebar" class="sidebar">
+            <ul class="chapter"><li><a href="./using-the-wiki.html"><strong>1.</strong> Using this Document</a></li><li><a href="./new-projects.html"><strong>2.</strong> Checklist For New Projects</a></li><li><a href="./JavaScript/javascript.html" class="active"><strong>3.</strong> JavaScript</a></li><li><a href="./docker-images.html"><strong>4.</strong> Docker</a></li><li><a href="./Python/index.html"><strong>5.</strong> Python</a></li><li><ul class="section"><li><a href="./Python/sqlalchemy.html"><strong>5.1.</strong> SqlAlchemy</a></li></ul></li><li><a href="./basic-server-setup.html"><strong>6.</strong> Basic Server Setup</a></li><li><a href="./Rust/index.html"><strong>7.</strong> Rust</a></li><li><ul class="section"><li><a href="./Rust/rust_interop.html"><strong>7.1.</strong> Using Rust outside Rust</a></li><li><a href="./Rust/emails_and_templates.html"><strong>7.2.</strong> Emails and Templates</a></li><li><a href="./Rust/best_practices.html"><strong>7.3.</strong> Best Practices</a></li></ul></li><li><a href="./testing_in_c.html"><strong>8.</strong> Testing In C</a></li><li><a href="./latex.html"><strong>9.</strong> LaTeX Snippets</a></li></ul>
+        </div>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar" class="menu-bar">
+                    <div class="left-buttons">
+                        <i id="sidebar-toggle" class="fa fa-bars"></i>
+                        <i id="theme-toggle" class="fa fa-paint-brush"></i>
+                    </div>
+
+                    <h1 class="menu-title"></h1>
+
+                    <div class="right-buttons">
+                        <i id="print-button" class="fa fa-print" title="Print this book"></i>
+                    </div>
+                </div>
+
+                <div id="content" class="content">
+                    <h1>JavaScript</h1>
+<p>Despite being prone to dooming you to callback hell, JavaScript can give you a
+lot of power and flexibility when it comes to accessing the browser and
+manipulating the DOM.</p>
+<h2>Jquery</h2>
+<p><code>Jquery</code> is a neat library that wraps some JavaScript's native methods of
+accessing and manipulating DOM objects and gives it a sane API. It allows you
+to easily access any element just using <a href="http://www.w3schools.com/jquery/jquery_ref_selectors.asp">CSS Selectors</a>, and
+lets you bind callbacks to various events with the <code>.on()</code> method.</p>
+<p>To use <code>Jquery</code>, add the following script tag to your page:</p>
+<pre><code>&lt;script src=&quot;https://code.jquery.com/jquery-3.1.0.min.js&quot;
+integrity=&quot;sha256-cCueBR6CsyA4/9szpPfrX3s49M9vUU5BgtiJj06wt/s=&quot;
+crossorigin=&quot;anonymous&quot;&gt;&lt;/script&gt;
+</code></pre>
+<h2>Events</h2>
+<p>JavaScript exposes <a href="http://www.w3schools.com/jsref/dom_obj_event.asp">a lot</a> of events, here are just a few of the most
+common ones:</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Mouse Events</th>
+            <th>Keyboard Events</th>
+            <th>Form Events</th>
+            <th>Document/Window Events</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>click</td>
+            <td>keypress</td>
+            <td>submit</td>
+            <td>load</td>
+        </tr>
+        <tr>
+            <td>dblclick</td>
+            <td>keydown</td>
+            <td>change</td>
+            <td>resize</td>
+        </tr>
+        <tr>
+            <td>mouseenter</td>
+            <td>keyup</td>
+            <td>focus</td>
+            <td>scroll</td>
+        </tr>
+        <tr>
+            <td>mouseleave</td>
+            <td></td>
+            <td>blur</td>
+            <td>unload</td>
+        </tr>
+    </tbody>
+</table>
+<p>Binding an action to an event with <code>Jquery</code> is really easy. Say you want to pop
+up an alert every time someone mouses over an element, you could do:</p>
+<pre><code>#!javascript
+$(&quot;#element&quot;).on(&quot;mouseenter&quot;, function(e) {alert(&quot;Look at me!&quot;)});
+</code></pre>
+<p><code>Jquery</code> also has methods that will bind to a specific event, instead of the
+more general <code>.on()</code> method. For example, you can do something similar with the
+<code>.hover()</code> method:</p>
+<pre><code>#!javascript
+$(&quot;#element&quot;).hover(function(e) {alert(&quot;Look at me!&quot;)});
+</code></pre>
+<p>A useful pattern for running code once the entire page has loaded is to add a
+callback to the <code>$(document).ready()</code> event.</p>
+<p>Each event handler is passed an object with information about the event. Most
+event objects have attributes specific to the event which occurred, but here
+are some of the more common ones. For more information, <a href="https://api.jquery.com/category/events/event-object/">consult the
+documentation</a>.</p>
+<ul>
+<li><strong>e.currentTarget</strong> - The current DOM element within the event bubbling phase.</li>
+<li><strong>e.data</strong> - An optional object of data passed to an event method when the
+current executing handler is bound.</li>
+<li><strong>e.delegateTarget</strong> - The element where the currently-called jQuery event
+handler was attached.</li>
+<li><strong>e.isDefaultPrevented()</strong> - Returns whether event.preventDefault() was
+ever called on this event object.</li>
+<li><strong>e.isImmediatePropagationStopped()</strong> - Returns whether
+e.stopImmediatePropagation() was ever called on this event object.</li>
+<li><strong>e.isPropagationStopped()</strong> - Returns whether event.stopPropagation() was
+ever called on this event object.</li>
+<li><strong>e.metaKey</strong> - Indicates whether the META key was pressed when the event
+fired.</li>
+<li><strong>e.namespace</strong> - The namespace specified when the event was triggered.</li>
+<li><strong>e.pageX</strong> - The mouse position relative to the left edge of the document.</li>
+<li><strong>e.pageY</strong> - The mouse position relative to the top edge of the document.</li>
+<li><strong>e.preventDefault()</strong> - If this method is called, the default action of
+the event will not be triggered.</li>
+<li><strong>e.relatedTarget</strong> - The other DOM element involved in the event, if any.</li>
+<li><strong>e.result</strong> - The last value returned by an event handler that was
+triggered by this event, unless the value was undefined.</li>
+<li><strong>e.stopImmediatePropagation()</strong> - Keeps the rest of the handlers from
+being executed and prevents the event from bubbling up the DOM tree.</li>
+<li><strong>e.stopPropagation()</strong> - Prevents the event from bubbling up the DOM tree,
+preventing any parent handlers from being notified of the event.</li>
+<li><strong>e.target</strong> - The DOM element that initiated the event.</li>
+<li><strong>e.timeStamp</strong> - The difference in milliseconds between the time the
+browser created the event and January 1, 1970.</li>
+<li><strong>e.type</strong> - Describes the nature of the event.</li>
+<li><strong>e.which</strong> - For key or mouse events, this property indicates the specific
+key or button that was pressed.</li>
+</ul>
+<h2>Timers</h2>
+<p>Because JavaScript is an event driven programming language, it is quite easy to
+set up a recurring timer which will raise an event (which then triggers your
+callback) after a period of time.</p>
+<p>The two key methods to use with JavaScript are:</p>
+<dl>
+    <dt>
+        setTimeout(function, milliseconds)
+    </dt>
+    <dd>
+        Executes a function, after waiting a specified number of milliseconds.
+    </dd>
+    <dt>
+        setInterval(function, milliseconds)
+    </dt>
+    <dd>
+        Same as setTimeout(), but repeats the execution of the function
+        continuously.
+    </dd>
+</dl>
+<p>For example, this is an (annoying) timer that'll raise an <code>alert()</code> every 3
+seconds.</p>
+<pre><code>#!javascript
+setInterval(function(){ alert(&quot;Hello&quot;); }, 3000);
+</code></pre>
+<h2>Asynchronous Requests</h2>
+<p>JavaScript has the ability to send of a http request, and then call a callback
+once the response is received. Jquery then gives you a nice wrapper around
+this. [Read the docs][jquery-ajax] for more details.</p>
+<ul>
+<li><strong>jQuery.get():</strong> Load data from the server using a HTTP GET request.</li>
+<li><strong>jQuery.getJSON():</strong> Load JSON-encoded data from the server using a GET
+HTTP request.</li>
+<li><strong>jQuery.getScript():</strong> Load a JavaScript file from the server using a GET HTTP request, then
+execute it.</li>
+<li><strong>jQuery.post():</strong> Load data from the server using a HTTP POST request.</li>
+<li><strong>jQuery.load():</strong> Load data from the server and place the returned HTML into the
+matched element.</li>
+</ul>
+<p>Here is an example of grabbing data from a web API and then printing it to the
+screen:</p>
+<pre><code>#!javascript
+$.get(&quot;http://ip-api.com/json&quot;, function(data) {
+    $(&quot;#ip-address&quot;).html(&quot;Your IP address is &quot; + data.query);
+});
+</code></pre>
+<h2>Possible Applications</h2>
+<p>Here are just a few ideas for applications (both malicious and benign) for
+JavaScript and Jquery.</p>
+<h3>A Keylogger</h3>
+<p>Because Jquery gives you access to the <code>keypressed</code> event, it's quite easy to
+bind an event handler to the body element which listens for <code>keypressed</code> and
+then logs it somewhere.</p>
+<p>The event object given to the handler contains the key pressed (as its ascii
+value), as well as information such as whether ctrl, alt, or shift were held
+down at the time. You can tie this in with either the mouse position or the
+<code>target</code> to figure out what the user was looking at when they entered some
+text.</p>
+<h3>Form Validator</h3>
+<p>Similar to the last example, you can hook into a form's <code>submit</code> event to then
+get whatever was entered into the form. Then using the <code>$(&quot;form&quot;).serialize()</code>
+method, you can get this data in a easy to read format and do whatever you want
+with it to validate a user's input before sending the form on to wherever it is
+meant to go.</p>
+<p>It goes without saying that if someone were to compromise a website and inject
+their own javascript onto the page, they would also get access to the form
+input as well.</p>
+
+                </div>
+
+                <!-- Mobile navigation buttons -->
+                
+                    <a href="./new-projects.html" class="mobile-nav-chapters previous">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                
+
+                
+                    <a href="./docker-images.html" class="mobile-nav-chapters next">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+                
+
+            </div>
+
+            
+                <a href="./new-projects.html" class="nav-chapters previous" title="You can navigate through the chapters using the arrow keys">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+            
+
+            
+                <a href="./docker-images.html" class="nav-chapters next" title="You can navigate through the chapters using the arrow keys">
+                    <i class="fa fa-angle-right"></i>
+                </a>
+            
+
+        </div>
+
+
+        <!-- Local fallback for Font Awesome -->
+        <script>
+            if ($(".fa").css("font-family") !== "FontAwesome") {
+                $('<link rel="stylesheet" type="text/css" href="_FontAwesome/css/font-awesome.css">').prependTo('head');
+            }
+        </script>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        
+
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+    </body>
+</html>

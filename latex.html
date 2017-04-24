@@ -1,0 +1,356 @@
+<!DOCTYPE HTML>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title></title>
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <base href="">
+
+        <link rel="stylesheet" href="book.css">
+        <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+
+        <link rel="shortcut icon" href="favicon.png">
+
+        <!-- Font Awesome -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+
+        <!-- MathJax -->
+        <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+        <!-- Fetch JQuery from CDN but have a local fallback -->
+        <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+        <script>
+            if (typeof jQuery == 'undefined') {
+                document.write(unescape("%3Cscript src='jquery.js'%3E%3C/script%3E"));
+            }
+        </script>
+    </head>
+    <body class="light">
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme = localStorage.getItem('theme');
+            if (theme == null) { theme = 'light'; }
+            $('body').removeClass().addClass(theme);
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var sidebar = localStorage.getItem('sidebar');
+            if (sidebar === "hidden") { $("html").addClass("sidebar-hidden") }
+            else if (sidebar === "visible") { $("html").addClass("sidebar-visible") }
+        </script>
+
+        <div id="sidebar" class="sidebar">
+            <ul class="chapter"><li><a href="./using-the-wiki.html"><strong>1.</strong> Using this Document</a></li><li><a href="./new-projects.html"><strong>2.</strong> Checklist For New Projects</a></li><li><a href="./JavaScript/javascript.html"><strong>3.</strong> JavaScript</a></li><li><a href="./docker-images.html"><strong>4.</strong> Docker</a></li><li><a href="./Python/index.html"><strong>5.</strong> Python</a></li><li><ul class="section"><li><a href="./Python/sqlalchemy.html"><strong>5.1.</strong> SqlAlchemy</a></li></ul></li><li><a href="./basic-server-setup.html"><strong>6.</strong> Basic Server Setup</a></li><li><a href="./Rust/index.html"><strong>7.</strong> Rust</a></li><li><ul class="section"><li><a href="./Rust/rust_interop.html"><strong>7.1.</strong> Using Rust outside Rust</a></li><li><a href="./Rust/emails_and_templates.html"><strong>7.2.</strong> Emails and Templates</a></li><li><a href="./Rust/best_practices.html"><strong>7.3.</strong> Best Practices</a></li></ul></li><li><a href="./testing_in_c.html"><strong>8.</strong> Testing In C</a></li><li><a href="./latex.html" class="active"><strong>9.</strong> LaTeX Snippets</a></li></ul>
+        </div>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar" class="menu-bar">
+                    <div class="left-buttons">
+                        <i id="sidebar-toggle" class="fa fa-bars"></i>
+                        <i id="theme-toggle" class="fa fa-paint-brush"></i>
+                    </div>
+
+                    <h1 class="menu-title"></h1>
+
+                    <div class="right-buttons">
+                        <i id="print-button" class="fa fa-print" title="Print this book"></i>
+                    </div>
+                </div>
+
+                <div id="content" class="content">
+                    <h1>LaTeX Snippets</h1>
+<h2>Inserting Images</h2>
+<pre><code class="language-tex">\usepackage{graphicx}
+...
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.8\textwidth]{./q1_model.png}
+\caption{Question 1 System Model}\label{fig:q1_model}
+\end{figure}
+</code></pre>
+<p>Sometimes you'll get those really annoying images who won't stay to their
+designated sections. You can use the <code>placeins</code> package to keep them under
+control.</p>
+<pre><code class="language-tex">\usepackage[section]{placeins}
+</code></pre>
+<h2>Equations</h2>
+<p>First you'll need the <code>amsmath</code> package:</p>
+<pre><code class="language-tex">\usepackage{amsmath}
+</code></pre>
+<p>Then you can enter math like normal, separating each line with <code>\\</code>. You can
+use the <code>&amp;</code> symbol to align each line. LaTeX will try to line up all the
+ampersands.</p>
+<pre><code class="language-tex">\begin{align}
+\frac{D(x) - D_i}{x} &amp;= \frac{D_o - D_i}{1} \\
+D(x) &amp;= x \times (D_o - D_i) + D_i  \\
+D(x) &amp;= x \times 0.5 + 0.25 \label{eq:q2_diameter}
+\end{align}
+</code></pre>
+<p>If you need to embed text in your equations, use the <code>intertext</code> command.</p>
+<pre><code class="language-tex">\begin{align}
+  P_i + \frac{1}{2} \rho V_i^2 &amp;= P(x) + \frac{1}{2} \rho \Big[ V(x) \Big]^2 \\
+  \intertext{Let $P_i$ = 0, so P(x) is now gauge pressure (relative to inlet)} \\
+  P(x) &amp;= \frac{1}{2} \rho V_i^2 - \frac{1}{2} \rho \Big[ V(x) \Big]^2 \\
+\end{align}
+</code></pre>
+<p>Slanted fractions can be accessed via the <code>xfrac</code> package.</p>
+<pre><code class="language-tex">\usepackage{xfrac}
+...
+
+\begin{align}
+  \sfrac{1}{2} - \sfrac{1}{3} &amp;= \sfrac{1}{6}
+\end{align}
+</code></pre>
+<p>When using <code>Python</code> and <code>Pandas</code> for numerical analysis, it is almost trivial
+to set things up so that the results are exported to a file, then included in
+a LaTeX report automatically.</p>
+<p>On the <code>Python</code> side:</p>
+<pre><code class="language-python">with open('data_table.tex', 'w') as f:
+    table = data.to_latex(index=False, escape=False)
+    f.write(table)
+</code></pre>
+<p>And in LaTeX:</p>
+<pre><code class="language-tex">\usepackage{booktabs}
+...
+
+\begin{table}[h]
+  \caption{Calculated and Measured Data}\label{tbl:data_table}
+  \input{./data_table.tex}
+\end{table}
+</code></pre>
+<p>To have the equations numbered according to their section (i.e. 1.1, 2.4, etc)
+instead of using a globally incrementing counter (i.e. 1, 2, 3 etc) use the
+<code>numberswithin</code> command:</p>
+<pre><code class="language-tex">\numberwithin{equation}{section}
+</code></pre>
+<h3>Table from CSV</h3>
+<p>You can insert tables from a csv using the [csvsimple] package and then just
+ask it to do all the hard stuff for generating the table.</p>
+<pre><code>\usepackage{csvsimple}
+...
+
+\csvautotabular{scientists.csv}
+</code></pre>
+<h2>Appendices</h2>
+<p>To start off the appendices section requires just one command:</p>
+<pre><code class="language-tex">\appendix
+</code></pre>
+<p>Thereafter, any <code>section</code> is added as an appendix instead of a normal section.</p>
+<p>To embed a PDF as one of your appendices, you can use the <code>pdfpages</code> package:</p>
+<pre><code class="language-tex">\usepackage{pdfpages}
+
+% Note, I added the front page separately so you can add a \section{} command
+% to make the appendix appear in the ToC. You also scale the document down a
+% tad to make it fit more nicely
+\includepdf[pagecommand=\section{Numerical Analysis}, scale=0.75, pages=1]{./Numerical_Analysis.pdf}
+\includepdf[scale=0.75, pages=2-]{./Numerical_Analysis.pdf}
+</code></pre>
+<h2>Footnotes</h2>
+<p>Adding footnotes is pretty straightforward.</p>
+<pre><code class="language-tex">I'm writing something here to test \footnote{footnotes working fine}
+several features.
+</code></pre>
+<p>Or if you have a particularly long footnote, you can insert a <code>\footnotemark</code>
+and then write the footnote itself at the bottom of your paragraph.</p>
+<pre><code class="language-tex">I'm writing something here to test \footnote[10]{footnotes working fine}
+several features. You can write the footnote text\footnotemark in its
+own line.
+\footnotetext{Second footnote}
+</code></pre>
+<h2>Nomenclature</h2>
+<p>(<a href="https://www.sharelatex.com/learn/Nomenclatures">more info</a>)</p>
+<p>A nomenclature works pretty much the same way as index entries.</p>
+<p>First you need to import the package and let it do some setup stuff:</p>
+<pre><code class="language-tex">\usepackage{nomencl}
+\makenomenclature
+</code></pre>
+<p>Then you'll define some symbols:</p>
+<pre><code class="language-tex">\nomenclature{$c$}{Speed of light in a vacuum inertial frame}
+\nomenclature{$h$}{Planck constant}
+</code></pre>
+<p>And finally tell LaTeX to print the nomenclature:</p>
+<pre><code class="language-tex">\printnomenclature
+</code></pre>
+<p>If you are using <code>latexmk</code> to build your document you need to tell it to do an
+extra run to generate the nomenclature index. Add this to your <code>~/.latexmkrc</code>:</p>
+<pre><code># Custom dependency and function for nomencl package
+add_cus_dep( 'nlo', 'nls', 0, 'makenlo2nls' );
+sub makenlo2nls {
+    system( &quot;makeindex -s nomencl.ist -o \&quot;$_[0].nls\&quot; \&quot;$_[0].nlo\&quot;&quot; );
+}
+</code></pre>
+<p>You can add units by defining this macro in your preamble:</p>
+<pre><code>\newcommand{\nomunit}[1]{%
+\renewcommand{\nomentryend}{\hspace*{\fill}#1}}
+</code></pre>
+<p>Then just include <code>\nomunit{}</code> in a description whenever you want to add units.</p>
+<pre><code>...
+\nomenclature{$c$}{Speed of light in a vacuum inertial system
+  \nomunit{$299,792,458\, m/s$}}
+...
+</code></pre>
+<h2>Referencing</h2>
+<p>Referencing in LaTeX is designed to be fairly painless and efficient to do.</p>
+<p>To cite various sources throughout your work, just add in a <code>\cite{foo}</code>, where
+<code>foo</code> would be a name for some reference in your <code>*.bib</code> file.</p>
+<p>The easiest way to manage your references is with a <code>bib</code> file that sits next
+to your other <code>tex</code> files. It's just a basic text file with references and
+their various bits of metadata listed;</p>
+<pre><code class="language-tex">@misc{chapter_6_notes,
+    author =       &quot;Ramesh Narayanaswamy&quot;,
+    title =        &quot;Flow Over Immersed Bodies: Concepts of Lift and Drag - Chapter 6&quot;,
+    year =         &quot;2016&quot;,
+    URL =          &quot;https://lms.curtin.edu.au/bbcswebdav/pid-4268432-dt-content-rid-23946938_1/courses/308810-CU-061-01-Sxx-x2/2016/LectureNotes/MCEN3002_2016_Chapter_06.pdf&quot;
+}
+</code></pre>
+<p>It's pretty much identical to what you'd normally need to enter in when using
+<code>Word</code>, except instead of filling in random boxes, it's entered into a text
+file that anything (not just M$ products) can read. Plus it's easy to put into
+version control.</p>
+<p>Once you've written up your reference database, all you need to do is tell LaTeX
+to print a bibliography using your <code>foo.bib</code> file, and also the referencing
+style to use.</p>
+<pre><code class="language-tex">\bibliographystyle{apalike}
+\bibliography{references}
+</code></pre>
+<p>Check out <a href="http://sites.stat.psu.edu/%7Esurajit/present/bib.htm">this page</a> for a list of the various bibliography and citation
+styles, and <a href="https://www.andy-roberts.net/res/writing/latex/bibentries.pdf">this page</a> for the various fields and entry types for your
+<code>*.bib</code> file.</p>
+<h2>Templates</h2>
+<p>I've got a pair of templates I use for pretty much everything.</p>
+<ul>
+<li><a href="https://github.com/Michael-F-Bryan/cheat-sheets/blob/master/src/lab_report_template.tex">General report template</a></li>
+<li><a href="https://github.com/Michael-F-Bryan/cheat-sheets/blob/master/src/cover_page_template.tex">Cover Sheet</a></li>
+</ul>
+<h2>Code Listings</h2>
+<p>To insert code snippets you'll need the <code>listings</code> package.</p>
+<pre><code class="language-tex">\usepackage{listings}
+</code></pre>
+<p>Then you can use the <code>lstlisting</code> environment for your code.</p>
+<pre><code class="language-tex">\begin{lstlisting}
+def foo(x):
+    &quot;&quot;&quot;Do something interesting&quot;&quot;&quot;
+    return x**x
+\end{lstlisting}
+</code></pre>
+<p>Alternatively, if you've got a file already that you want include, you can input
+it. Optionally specifying line numbers and language.</p>
+<pre><code class="language-tex">\lstinputlisting[language=Octave, firstline=2, lastline=12]{BitXorMatrix.m}
+</code></pre>
+<p>With the <code>lstlisting</code> environment, you can also add a caption or language.</p>
+<pre><code class="language-tex">\begin{lstlisting}[language=Python, caption=Python example]
+...
+
+\end{lstlisting}
+</code></pre>
+<p>And then you can chuck a <em>list of listings</em> (similar to list of figures, etc) at
+the front of your document.</p>
+<pre><code class="language-tex">\lstlistoflistings
+</code></pre>
+<h2>Custom Floats</h2>
+<p>By default, LaTeX comes with <code>figure</code> and <code>table</code> as the only floats available,
+although it's fairly trivial to add your own custom ones.</p>
+<p>First you need to import the <code>float</code> package,</p>
+<pre><code class="language-tex">\usepackage{float}
+</code></pre>
+<p>Then define your custom float.</p>
+<pre><code class="language-tex">\floatstyle{ruled}
+\newfloat{program}{thp}{lop}
+\floatname{program}{Program}
+</code></pre>
+<p>And use it,</p>
+<pre><code class="language-tex">\begin{program}
+  \begin{verbatim}
+
+class HelloWorldApp {
+  public static void main(String[] args) {
+    //Display the string
+    System.out.println(&quot;Hello World!&quot;);
+  }
+}
+\end{verbatim}
+  \caption{The Hello World! program in Java.}
+\end{program}
+</code></pre>
+<p>From the LaTeX wikibook:</p>
+<ol>
+<li>Add <code>\usepackage{float}</code> to the preamble of your document</li>
+<li>Declare your new float using: <code>\newfloat{type}{placement}{ext}[outer counter]</code>,
+where:
+<ul>
+<li><strong>type</strong> - the new name you wish to call your float, in this instance, 'program'.</li>
+<li><strong>placement</strong> - t, b, p, or h (as previously described in Placement), where
+letters enumerate permitted placements.</li>
+<li><strong>ext</strong> - the file name extension of an auxiliary file for the list of
+figures (or whatever). Latex writes the captions to this file.</li>
+<li><strong>outer counter</strong> - the presence of this parameter indicates that the
+counter associated with this new float should depend on outer counter, for
+example 'chapter'.</li>
+</ul>
+</li>
+<li>The default name that appears at the start of the caption is the type. If you
+wish to alter this, use <code>\floatname{type}{floatname}</code>.</li>
+<li>Changing float style can be issued with <code>\floatstyle{style}</code> (Works on all
+subsequent <code>\newfloat</code> commands, therefore, must be inserted before
+<code>\newfloat</code> to be effective).
+<ul>
+<li><strong>plain</strong> - the normal style for Latex floats, but the caption is always
+below the content.</li>
+<li><strong>plaintop</strong> - the normal style for Latex floats, but the caption is
+always above the content.</li>
+<li><strong>boxed</strong> - a box is drawn that surrounds the float, and the caption is
+printed below.</li>
+<li><strong>ruled</strong> - the caption appears above the float, with rules immediately
+above and below. Then the float contents, followed by a final horizontal rule.</li>
+</ul>
+</li>
+</ol>
+
+                </div>
+
+                <!-- Mobile navigation buttons -->
+                
+                    <a href="./testing_in_c.html" class="mobile-nav-chapters previous">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                
+
+                
+
+            </div>
+
+            
+                <a href="./testing_in_c.html" class="nav-chapters previous" title="You can navigate through the chapters using the arrow keys">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+            
+
+            
+
+        </div>
+
+
+        <!-- Local fallback for Font Awesome -->
+        <script>
+            if ($(".fa").css("font-family") !== "FontAwesome") {
+                $('<link rel="stylesheet" type="text/css" href="_FontAwesome/css/font-awesome.css">').prependTo('head');
+            }
+        </script>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        
+
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+    </body>
+</html>

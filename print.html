@@ -1,0 +1,1676 @@
+<!DOCTYPE HTML>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title></title>
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <base href="">
+
+        <link rel="stylesheet" href="book.css">
+        <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+
+        <link rel="shortcut icon" href="favicon.png">
+
+        <!-- Font Awesome -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+
+        <!-- MathJax -->
+        <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+        <!-- Fetch JQuery from CDN but have a local fallback -->
+        <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+        <script>
+            if (typeof jQuery == 'undefined') {
+                document.write(unescape("%3Cscript src='jquery.js'%3E%3C/script%3E"));
+            }
+        </script>
+    </head>
+    <body class="light">
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme = localStorage.getItem('theme');
+            if (theme == null) { theme = 'light'; }
+            $('body').removeClass().addClass(theme);
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var sidebar = localStorage.getItem('sidebar');
+            if (sidebar === "hidden") { $("html").addClass("sidebar-hidden") }
+            else if (sidebar === "visible") { $("html").addClass("sidebar-visible") }
+        </script>
+
+        <div id="sidebar" class="sidebar">
+            <ul class="chapter"><li><a href="./using-the-wiki.html"><strong>1.</strong> Using this Document</a></li><li><a href="./new-projects.html"><strong>2.</strong> Checklist For New Projects</a></li><li><a href="./JavaScript/javascript.html"><strong>3.</strong> JavaScript</a></li><li><a href="./docker-images.html"><strong>4.</strong> Docker</a></li><li><a href="./Python/index.html"><strong>5.</strong> Python</a></li><li><ul class="section"><li><a href="./Python/sqlalchemy.html"><strong>5.1.</strong> SqlAlchemy</a></li></ul></li><li><a href="./basic-server-setup.html"><strong>6.</strong> Basic Server Setup</a></li><li><a href="./Rust/index.html"><strong>7.</strong> Rust</a></li><li><ul class="section"><li><a href="./Rust/rust_interop.html"><strong>7.1.</strong> Using Rust outside Rust</a></li><li><a href="./Rust/emails_and_templates.html"><strong>7.2.</strong> Emails and Templates</a></li><li><a href="./Rust/best_practices.html"><strong>7.3.</strong> Best Practices</a></li></ul></li><li><a href="./testing_in_c.html"><strong>8.</strong> Testing In C</a></li><li><a href="./latex.html"><strong>9.</strong> LaTeX Snippets</a></li></ul>
+        </div>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar" class="menu-bar">
+                    <div class="left-buttons">
+                        <i id="sidebar-toggle" class="fa fa-bars"></i>
+                        <i id="theme-toggle" class="fa fa-paint-brush"></i>
+                    </div>
+
+                    <h1 class="menu-title"></h1>
+
+                    <div class="right-buttons">
+                        <i id="print-button" class="fa fa-print" title="Print this book"></i>
+                    </div>
+                </div>
+
+                <div id="content" class="content">
+                    <h1>Michael's Cheat Sheets</h1>
+<p>A collection of various cheat sheets, code snippets and quick articles
+explaining some of the common things I've done.</p>
+<p><a href="https://travis-ci.org/Michael-F-Bryan/cheat-sheets"><img src="https://travis-ci.org/Michael-F-Bryan/cheat-sheets.svg?branch=master" alt="Build Status" /></a></p>
+<p><code>travis-ci</code> rebuilds the cheat sheets every time I make a commit, so you can
+view the latest version <a href="https://michael-f-bryan.github.io/cheat-sheets/">here</a>.</p>
+<p>If you are interested in seeing the project's source repository, it's
+<a href="https://github.com/Michael-F-Bryan/cheat-sheets">all on GitHub</a>.</p>
+<h2>Usage</h2>
+<p>To generate the pretty html version, you need to have <code>mdbook</code> installed.
+<code>mdbook</code> is a gitbook-like program written in the <code>Rust</code> programming language
+mainly targeted at marking up and presenting documentation. To install it you
+can do</p>
+<pre><code>cargo install mdbook
+</code></pre>
+<p>Then generating the html is as simple as <code>cd</code>-ing to this root directory and
+running</p>
+<pre><code>mdbook build
+</code></pre>
+<p>If you don't have <code>Rust</code> installed, by far the easiest thing to do is get it
+from <a href="https://rustup.rs/">https://rustup.rs/</a>. <code>Rustup</code> is a tool created by the <code>Rust</code>
+developers for managing multiple versions of the <code>Rust</code> compiler at the same
+time, as well as continuously keeping it up to date, and installing alternate
+compilation targets (e.g. so you can effortlessly cross-compile for Android or
+Windows from a Linux machine).</p>
+<p><code>mdbook</code> also has a nice feature where it'll serve your documentation and as
+you are editing it, everything will get regenerated and updated in your browser
+every time a file is saved.</p>
+<pre><code>mdbook serve
+</code></pre>
+<p><code>mdbook</code> expects a directory structure similar to the following:</p>
+<pre><code>.
+├── README.md
+├── src
+|  ├── SUMMARY.md
+|  ├── chapter-1.md
+|  └── ...
+└── book
+   ├── index.html
+   └── ...
+</code></pre>
+<p>When you build the book, all generated html is put in the <code>/book</code> directory
+using the Markdown files in the <code>/src</code> directory according to the contents of
+<code>/src/SUMMARY.md</code>.</p>
+<p>For more information on how to use <code>mdbook</code>, consult the
+<a href="http://azerupi.github.io/mdBook/README.html">documentation</a>.</p>
+<h1>Guideline For Creating A New Project</h1>
+<p>Here's a basic checklist I use when creating a new project to make sure it's
+easy for people to get started (or when you come back in a couple months time).</p>
+<p>For even medium sized projects I would consider all of these points to be
+mandatory. Not only do they enforce good practice, but it also makes it <strong>a lot</strong>
+easier for new people to start contributing quickly and also gives you the
+flexibility to adapt to the project's ever-changing requirements.</p>
+<p>I've also tried to add my justification for why each point is necessary, but
+feel free to just skip to the dot points at the end of each section if you want.</p>
+<p>Links:</p>
+<ul>
+<li><a href="#Make%20A%20Good%20Readme">Make A Good Readme</a></li>
+<li><a href="#Automated%20Testing">Automated Testing</a></li>
+<li><a href="#Version%20Control%20and%20GitHub%2fGitLab">Version Control and GitHub/GitLab</a></li>
+<li><a href="#Testing">Testing</a></li>
+<li><a href="#Continuous%20Integration">Continuous Integration</a></li>
+</ul>
+<h2>Make A Good Readme</h2>
+<p>A README is important. It's usually the first thing people will want to read
+when they want to get started, plus it's also what gets shown the moment they
+click on your GitHub project. As such, it's a good idea to put a little effort
+in.</p>
+<p>Here is what I'd consider the bare minimum for a README:</p>
+<ul>
+<li>One liner describing the project and what it does.</li>
+<li>More in-depth description of the project. You could explain the components,
+how it works, why people would use it instead of some alternative, etc.</li>
+<li>How to get a dev environment set up.</li>
+<li>How to get the code, download dependencies, and compile.</li>
+<li>&quot;Hello World&quot; equivalent. This might be as simple as telling them to run
+<code>$ ./my-binary</code>, or a basic code snippet if it's a library.</li>
+<li>Documentation. Where is it and how can I generate a local copy?</li>
+<li>Tests. How do you run the test suite?</li>
+</ul>
+<h2>Version Control and GitHub/GitLab</h2>
+<p>It almost goes without saying, <strong>use version control</strong>. Not using version
+control is kinda like going through the entire project without saving. Then when
+someone wants to make some changes they'll create a copy of this master version,
+do their stuff, then afterwards they manually copy/paste in all their changes.</p>
+<p>This workflow is fine when there's only one (or maybe two, if you're really
+disciplined) people working on a project. However once you throw in multiple
+developers and multiple versions of your project this quickly turns into a
+massive cluster-fuck and becomes impossible to maintain.</p>
+<p>Using version control makes most of these problems go away by using a system
+which enforces the discipline for you. Each set of changes is packaged as a
+single commit with an associated commit message written by the developer
+explaining those changes and the rationale behind them. It also allows you to
+track exactly who did what and when.</p>
+<p>Tools like <a href="https://github.com/">GitHub</a> and <a href="https://gitlab.com">GitLab</a> are
+awesome. They provide a central place for your project's repository and several
+useful tools for managing a project. One of the most under-rated of these is
+the use of issues. Issues are a way to track bugs and features in your project,
+as well as who is in charge of fixing something, extra comments and discussion
+related to that issue, and much more. It's a much better system than someone
+going up to a developer and verbally telling them about something that needs
+fixing as it enforces using a disciplined way of tracking and discussing an
+issue. Also, the act of writing down a problem helps people to properly explain
+the issue at hand, converting something like &quot;Feature X doesn't work like it
+should&quot; into &quot;When I used feature X, I expected A to happen. Instead, I got B&quot;.</p>
+<p>You are also given the ability to group issues into milestones. This allows
+teams to relate specific issues to a particular high level goal and keep
+everything under the same system.</p>
+<p>GitHub and GitLab are largely identical in functionality. The main difference is
+that GitHub is a service hosted by the GitHub company and is more targeted
+towards open source projects, whereas GitLab allows you to run your own private
+GitLab server on your own hardware. Which is more desirable for a commercial
+project where you don't want to be sharing your product's internals with the
+world.</p>
+<p>The checklist for this section is pretty short:</p>
+<ul>
+<li>Are you using version control?</li>
+<li>Do you use something like GitHub (for open source projects) or a private
+GitLab (commercial projects) to track issues and manage the repository?</li>
+</ul>
+<h2>Testing</h2>
+<p>There's a common saying in software, <em>&quot;If it's not tested, it's broken&quot;</em>. If you
+can't prove to yourself that your project works as expected, then it's
+effectively just running on dreams and wishful thinking.</p>
+<p>Or, put differently, not having automated tests for a big project is kinda like
+a chef preparing an expensive meal and then serving it to the customer without
+having tasted it to see if it's edible.</p>
+<p>Most peoples' first thought is that whenever they change something they'll just
+run the program again and manually check everything works as it should. Not only
+is this a fairly hands-on process, often requiring you to click through a bunch
+of windows or menus to get to the thing you just changed, but you often end up
+mindlessly trying different combinations of inputs to ensure all the edge
+conditions are covered. Also, don't forget that by changing one thing you could
+have created a subtle bug elsewhere in the program, so you should really check
+all that too.</p>
+<p>As you can imagine, after a couple of these manual testing cycles a normal
+human will start to get bored and skip the testing phase, telling themselves
+&quot;it's okay, I know what I'm doing so there's no way I could have made a bug&quot;.</p>
+<p>In reality, checking something using a list of inputs is something computers
+excel at. So why spend 10 minutes manually checking something after each change
+when you might spend 20 minutes writing a test <strong>once</strong>, then after every change
+testing the entire program can be done in a couple hundred milliseconds. The
+numbers should speak for themselves.</p>
+<p>Automated tests are also invaluable for situations when you may not have
+everything you need to do the manual testing. For example, when doing the
+telemetry software for CMT we only actually had a working race car in the last
+month, and the hardware side of telemetry was only working a couple days before
+comp. Without having my automated test suite to ensure everything worked as
+expected beforehand, I wouldn't have been able to start until a couple days
+before comp, because I would have made the entire system up til then on top of
+optimism and wishful thinking.</p>
+<ul>
+<li>Does the project have a test suite?</li>
+<li>Can I run this test suite with a single click of a button (or with a single
+super basic command like <code>make test</code>)?</li>
+<li>Does my test suite cover most of the project's use cases?</li>
+<li>Are there unit tests for testing individual chunks of functionality?</li>
+<li>Are there some end-to-end tests which exercise the project in its entirety and
+ensure all the components work together correctly?</li>
+</ul>
+<h2>Continuous Integration</h2>
+<p>CI is cool. It means you'll do a change, push it to your version control, then
+that automatically kicks off a server to download your project, build it, and
+run your entire test suite. Then if your last commit broke anything it'll let
+you know.</p>
+<p>If everything passes you can even set things up so that the continuous
+integration server will package your project up and create a new release.</p>
+<blockquote>
+<p>Imagine this scenario; you come into work to find out that there's a new bug.
+You first create a test to reproduce the bug, then write the code to fix it.
+When the test finally passes on your local machine you commit your code and
+push it up to your central repository. Your continuous integration system
+notices the change and runs all your tests against the new code but finds that
+your new fix breaks some existing functionality (for example, it broke a
+Windows-specific feature but you didn't notice because you work on a Mac).
+The CI server immediately sends you an email letting you know what happened,
+you fix the existing feature and then push up the final code. Your CI server
+then runs everything again, finds that nothing is broken, and then automatically
+creates new binaries so that customers can download the fixed version. This
+entire process may have taken a day.</p>
+<p>You can see how the effect of using version control, having automated
+tests, and continuous integration combine to give your business a turn around
+time on the order of days instead of waiting on the usual monthly release
+schedule.</p>
+</blockquote>
+<p>The way continuous integration usually works is through web hooks. Put simply,
+whenever GitHub or GitLab receive a new commit they can be set up to
+automatically send a message to some server. This server then fetches the latest
+commit, builds your program, then runs its test suite.</p>
+<p>Setting this up is super easy. In GitLab you'll enter the URL of your CI server
+and tell it what events to listen for.</p>
+<p><img src="https://github.com/Michael-F-Bryan/cheat-sheets/raw/master/src/webhooks.png" alt="Webhooks in GitLab" /></p>
+<p>As such, the checklist for this section is also a short one:</p>
+<ul>
+<li>Do you have continuous integration set up with GitHub/GitLab?</li>
+<li>Does your CI server run your automated tests on every commit?</li>
+<li>(If Applicable) Does your CI server automatically re-generate your project's
+documentation/</li>
+<li>(Optional) Does your CI server automate the process of pushing new releases?</li>
+</ul>
+<h1>JavaScript</h1>
+<p>Despite being prone to dooming you to callback hell, JavaScript can give you a
+lot of power and flexibility when it comes to accessing the browser and
+manipulating the DOM.</p>
+<h2>Jquery</h2>
+<p><code>Jquery</code> is a neat library that wraps some JavaScript's native methods of
+accessing and manipulating DOM objects and gives it a sane API. It allows you
+to easily access any element just using <a href="http://www.w3schools.com/jquery/jquery_ref_selectors.asp">CSS Selectors</a>, and
+lets you bind callbacks to various events with the <code>.on()</code> method.</p>
+<p>To use <code>Jquery</code>, add the following script tag to your page:</p>
+<pre><code>&lt;script src=&quot;https://code.jquery.com/jquery-3.1.0.min.js&quot;
+integrity=&quot;sha256-cCueBR6CsyA4/9szpPfrX3s49M9vUU5BgtiJj06wt/s=&quot;
+crossorigin=&quot;anonymous&quot;&gt;&lt;/script&gt;
+</code></pre>
+<h2>Events</h2>
+<p>JavaScript exposes <a href="http://www.w3schools.com/jsref/dom_obj_event.asp">a lot</a> of events, here are just a few of the most
+common ones:</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Mouse Events</th>
+            <th>Keyboard Events</th>
+            <th>Form Events</th>
+            <th>Document/Window Events</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>click</td>
+            <td>keypress</td>
+            <td>submit</td>
+            <td>load</td>
+        </tr>
+        <tr>
+            <td>dblclick</td>
+            <td>keydown</td>
+            <td>change</td>
+            <td>resize</td>
+        </tr>
+        <tr>
+            <td>mouseenter</td>
+            <td>keyup</td>
+            <td>focus</td>
+            <td>scroll</td>
+        </tr>
+        <tr>
+            <td>mouseleave</td>
+            <td></td>
+            <td>blur</td>
+            <td>unload</td>
+        </tr>
+    </tbody>
+</table>
+<p>Binding an action to an event with <code>Jquery</code> is really easy. Say you want to pop
+up an alert every time someone mouses over an element, you could do:</p>
+<pre><code>#!javascript
+$(&quot;#element&quot;).on(&quot;mouseenter&quot;, function(e) {alert(&quot;Look at me!&quot;)});
+</code></pre>
+<p><code>Jquery</code> also has methods that will bind to a specific event, instead of the
+more general <code>.on()</code> method. For example, you can do something similar with the
+<code>.hover()</code> method:</p>
+<pre><code>#!javascript
+$(&quot;#element&quot;).hover(function(e) {alert(&quot;Look at me!&quot;)});
+</code></pre>
+<p>A useful pattern for running code once the entire page has loaded is to add a
+callback to the <code>$(document).ready()</code> event.</p>
+<p>Each event handler is passed an object with information about the event. Most
+event objects have attributes specific to the event which occurred, but here
+are some of the more common ones. For more information, <a href="https://api.jquery.com/category/events/event-object/">consult the
+documentation</a>.</p>
+<ul>
+<li><strong>e.currentTarget</strong> - The current DOM element within the event bubbling phase.</li>
+<li><strong>e.data</strong> - An optional object of data passed to an event method when the
+current executing handler is bound.</li>
+<li><strong>e.delegateTarget</strong> - The element where the currently-called jQuery event
+handler was attached.</li>
+<li><strong>e.isDefaultPrevented()</strong> - Returns whether event.preventDefault() was
+ever called on this event object.</li>
+<li><strong>e.isImmediatePropagationStopped()</strong> - Returns whether
+e.stopImmediatePropagation() was ever called on this event object.</li>
+<li><strong>e.isPropagationStopped()</strong> - Returns whether event.stopPropagation() was
+ever called on this event object.</li>
+<li><strong>e.metaKey</strong> - Indicates whether the META key was pressed when the event
+fired.</li>
+<li><strong>e.namespace</strong> - The namespace specified when the event was triggered.</li>
+<li><strong>e.pageX</strong> - The mouse position relative to the left edge of the document.</li>
+<li><strong>e.pageY</strong> - The mouse position relative to the top edge of the document.</li>
+<li><strong>e.preventDefault()</strong> - If this method is called, the default action of
+the event will not be triggered.</li>
+<li><strong>e.relatedTarget</strong> - The other DOM element involved in the event, if any.</li>
+<li><strong>e.result</strong> - The last value returned by an event handler that was
+triggered by this event, unless the value was undefined.</li>
+<li><strong>e.stopImmediatePropagation()</strong> - Keeps the rest of the handlers from
+being executed and prevents the event from bubbling up the DOM tree.</li>
+<li><strong>e.stopPropagation()</strong> - Prevents the event from bubbling up the DOM tree,
+preventing any parent handlers from being notified of the event.</li>
+<li><strong>e.target</strong> - The DOM element that initiated the event.</li>
+<li><strong>e.timeStamp</strong> - The difference in milliseconds between the time the
+browser created the event and January 1, 1970.</li>
+<li><strong>e.type</strong> - Describes the nature of the event.</li>
+<li><strong>e.which</strong> - For key or mouse events, this property indicates the specific
+key or button that was pressed.</li>
+</ul>
+<h2>Timers</h2>
+<p>Because JavaScript is an event driven programming language, it is quite easy to
+set up a recurring timer which will raise an event (which then triggers your
+callback) after a period of time.</p>
+<p>The two key methods to use with JavaScript are:</p>
+<dl>
+    <dt>
+        setTimeout(function, milliseconds)
+    </dt>
+    <dd>
+        Executes a function, after waiting a specified number of milliseconds.
+    </dd>
+    <dt>
+        setInterval(function, milliseconds)
+    </dt>
+    <dd>
+        Same as setTimeout(), but repeats the execution of the function
+        continuously.
+    </dd>
+</dl>
+<p>For example, this is an (annoying) timer that'll raise an <code>alert()</code> every 3
+seconds.</p>
+<pre><code>#!javascript
+setInterval(function(){ alert(&quot;Hello&quot;); }, 3000);
+</code></pre>
+<h2>Asynchronous Requests</h2>
+<p>JavaScript has the ability to send of a http request, and then call a callback
+once the response is received. Jquery then gives you a nice wrapper around
+this. [Read the docs][jquery-ajax] for more details.</p>
+<ul>
+<li><strong>jQuery.get():</strong> Load data from the server using a HTTP GET request.</li>
+<li><strong>jQuery.getJSON():</strong> Load JSON-encoded data from the server using a GET
+HTTP request.</li>
+<li><strong>jQuery.getScript():</strong> Load a JavaScript file from the server using a GET HTTP request, then
+execute it.</li>
+<li><strong>jQuery.post():</strong> Load data from the server using a HTTP POST request.</li>
+<li><strong>jQuery.load():</strong> Load data from the server and place the returned HTML into the
+matched element.</li>
+</ul>
+<p>Here is an example of grabbing data from a web API and then printing it to the
+screen:</p>
+<pre><code>#!javascript
+$.get(&quot;http://ip-api.com/json&quot;, function(data) {
+    $(&quot;#ip-address&quot;).html(&quot;Your IP address is &quot; + data.query);
+});
+</code></pre>
+<h2>Possible Applications</h2>
+<p>Here are just a few ideas for applications (both malicious and benign) for
+JavaScript and Jquery.</p>
+<h3>A Keylogger</h3>
+<p>Because Jquery gives you access to the <code>keypressed</code> event, it's quite easy to
+bind an event handler to the body element which listens for <code>keypressed</code> and
+then logs it somewhere.</p>
+<p>The event object given to the handler contains the key pressed (as its ascii
+value), as well as information such as whether ctrl, alt, or shift were held
+down at the time. You can tie this in with either the mouse position or the
+<code>target</code> to figure out what the user was looking at when they entered some
+text.</p>
+<h3>Form Validator</h3>
+<p>Similar to the last example, you can hook into a form's <code>submit</code> event to then
+get whatever was entered into the form. Then using the <code>$(&quot;form&quot;).serialize()</code>
+method, you can get this data in a easy to read format and do whatever you want
+with it to validate a user's input before sending the form on to wherever it is
+meant to go.</p>
+<p>It goes without saying that if someone were to compromise a website and inject
+their own javascript onto the page, they would also get access to the form
+input as well.</p>
+<h1>Common Docker Images</h1>
+<p>Here are several examples of Docker images and how to use them.</p>
+<h2>Postgres</h2>
+<p>Full documentation <a href="https://hub.docker.com/_/postgres/">here</a>.</p>
+<p>To create a temporary Postgres container:</p>
+<pre><code>docker run -d \
+    -e POSTGRES_PASSWORD=mysecretpassword \
+    -p 5432:5432 \
+    postgres
+</code></pre>
+<p>This will create a Postgres database listening on <code>localhost:5432</code>, with the
+username <code>postgres</code> and the password <code>mysecretpassword</code>. The database name also
+defaults to <code>postgres</code>.</p>
+<p>The following environment variables allow you to change various aspects of the
+container:</p>
+<ul>
+<li><code>POSTGRES_USER</code> - Change the default user</li>
+<li><code>POSTGRES_PASSWORD</code> - Alter the user's password</li>
+<li><code>PGDATA</code> - Define another location for the database files (default:
+/var/lib/postgresql/data)</li>
+<li><code>POSTGRES_DB</code> - Define a different name for the default database</li>
+</ul>
+<p>For persistence, you will often want to add <code>-v /path/to/data:/var/lib/postgresql/data</code> to the command to let the container
+write to a directory on the host OS.</p>
+<h2>Redis</h2>
+<p>Full documentation <a href="https://hub.docker.com/_/redis/">here</a>.</p>
+<p>Starting the image is fairly easy:</p>
+<pre><code>docker run -d -p 6379:6379 redis
+</code></pre>
+<p>If you want to access the data directory, or share it as a volume for whatever
+reason, the persistent data is stored in the image's <code>/data</code> directory.</p>
+<h2>Static Files With Nginx</h2>
+<p>Full documentation <a href="https://hub.docker.com/r/kyma/docker-nginx/">here</a>.</p>
+<p>This uses a 3rd party docker image because the official one is too general. It
+will serve anything in <code>/var/www</code> and EXPOSEs both port 80 and 443.</p>
+<pre><code>docker run -d -p 80:80 -v /tmp/share:/var/www:ro kyma/docker-nginx
+</code></pre>
+<h2>Celery Worker</h2>
+<p>Full documentation <a href="https://hub.docker.com/_/celery/">here</a>.</p>
+<p>To spin up a celery worker and attach it to a running redis instance, do:</p>
+<pre><code>docker run --link some-redis:redis --name some-celery -e CELERY_BROKER_URL=redis://redis -d celery
+</code></pre>
+<p>If you are wanting to check the status of the cluster, you can temporarily
+attach a new celery worker and call <code>celery status</code>.</p>
+<pre><code>docker run --link some-redis:redis -e CELERY_BROKER_URL=redis://redis --rm celery celery status
+</code></pre>
+<h1>Python</h1>
+<p>The following pages are some of my notes for using the Python programming
+language.</p>
+<h1>SqlAlchemy Basics</h1>
+<h2>Engines and Sessions</h2>
+<p>The docs for <a href="http://docs.sqlalchemy.org/en/latest/core/engines.html#database-urls">engines</a> and <a href="http://docs.sqlalchemy.org/en/latest/orm/session_basics.html#session-basics">sessions</a>.</p>
+<p>You can create a basic sqlite engine.</p>
+<pre><code class="language-python">    from sqlalchemy import create_engine
+    engine = create_engine('sqlite:///:memory:')
+</code></pre>
+<p>Or for something more advanced...</p>
+<p>Given:</p>
+<ul>
+<li>user: scott</li>
+<li>password: tiger</li>
+<li>host: localhost</li>
+<li>database: test</li>
+</ul>
+<p>The equivalent URI would be:</p>
+<pre><code class="language-python">    engine = create_engine(&quot;postgresql://scott:tiger@localhost/test&quot;)
+    engine = create_engine(&quot;mysql://scott:tiger@hostname/test&quot;,
+                                encoding='latin1', echo=True)
+</code></pre>
+<p>To interact with the engine you need to use a session. You can create a session
+using a sessionmaker.</p>
+<pre><code class="language-python">    from sqlalchemy.orm import sessionmaker
+    Session = sessionmaker(bind=engine)
+
+    some_session = Session()
+</code></pre>
+<h2>Models</h2>
+<p><a href="http://docs.sqlalchemy.org/en/latest/orm/tutorial.html#declare-a-mapping">The Docs</a></p>
+<p>An example of a basic model...</p>
+<pre><code class="language-python">    from sqlalchemy.ext.declarative import declarative_base
+    from sqlalchemy import Column, Integer, String
+
+    Base = declarative_base()
+
+    class User(Base):
+        __tablename__ = 'users'
+
+        id = Column(Integer, primary_key=True)
+        name = Column(String)
+        fullname = Column(String)
+        password = Column(String)
+
+        def __repr__(self):
+        return &quot;&lt;User(name='%s', fullname='%s', password='%s')&gt;&quot; % (
+                                self.name, self.fullname, self.password)
+</code></pre>
+<p>It's pretty easy to create the tables that correspond to your models.</p>
+<pre><code class="language-python">    Base.metadata.create_all(engine)
+</code></pre>
+<p>Dropping all tables and data is just as simple.</p>
+<pre><code class="language-python">    Base.metadata.drop_all(engine)
+</code></pre>
+<h2>Creating Data</h2>
+<p><a href="http://docs.sqlalchemy.org/en/latest/orm/tutorial.html#adding-and-updating-objects">The Docs</a>
+Once you have a session and have defined some models, you can create instances
+of that model.</p>
+<pre><code class="language-python">    ed_user = User(name='ed', fullname='Ed Jones', password='edspassword')
+</code></pre>
+<p>You can then stage the instance to your session (similar to how you stage
+changes before committing them with <code>git</code>).</p>
+<pre><code class="language-python">    session.add(ed_user)
+</code></pre>
+<p>You can then commit everything in one hit.</p>
+<pre><code class="language-python">    session.commit()
+</code></pre>
+<p>Or roll back, if you don't want to save your changes.</p>
+<pre><code class="language-python">    session.rollback()
+</code></pre>
+<h2>Making Queries</h2>
+<p><a href="http://docs.sqlalchemy.org/en/latest/orm/query.html#query-api">The Docs</a></p>
+<h2>Many-to-Many Relationships</h2>
+<p>This can be a tricky topic, so make sure to read <a href="http://docs.sqlalchemy.org/en/latest/orm/basic_relationships.html#many-to-many">the docs</a>!</p>
+<p>Many to Many adds an association table between two classes. The association
+table is indicated by the secondary argument to relationship(). Usually, the
+Table uses the MetaData object associated with the declarative base class, so
+that the ForeignKey directives can locate the remote tables with which to link.</p>
+<pre><code class="language-python">    from sqlalchemy import Table, Column, Integer, ForeignKey
+    from sqlalchemy.orm import relationship
+    from sqlalchemy.ext.declarative import declarative_base
+
+    association_table = Table('association', Base.metadata,
+        Column('left_id', Integer, ForeignKey('left.id')),
+        Column('right_id', Integer, ForeignKey('right.id')))
+</code></pre>
+<p>Now to link the two classes, you need to declare a <code>relationship</code> attribute.
+The <code>secondary</code> argument specifies the association table used. The
+<code>back_populates</code> argument tells SqlAlchemy which column to link with when it
+joins the two tables. It allows you to access the linked records as a list
+with something like <code>Parent.children</code>.</p>
+<pre><code class="language-python">    class Parent(Base):
+        __tablename__ = 'left'
+        id = Column(Integer, primary_key=True)
+        children = relationship(
+            &quot;Child&quot;,
+            secondary=association_table,
+            back_populates=&quot;parents&quot;)
+
+    class Child(Base):
+        __tablename__ = 'right'
+        id = Column(Integer, primary_key=True)
+        parents = relationship(
+            &quot;Parent&quot;,
+            secondary=association_table,
+            back_populates=&quot;children&quot;)
+</code></pre>
+<p>Alternatively, you can use the <code>backref</code> argument when specifying the
+<code>relationship</code> for one class, this creates a virtual column in the
+corresponding class that links back to the first one.</p>
+<pre><code class="language-python">    class Parent(Base):
+        __tablename__ = 'left'
+        id = Column(Integer, primary_key=True)
+        children = relationship(&quot;Child&quot;,
+                        secondary=association_table,
+                        backref=&quot;parents&quot;)
+
+    class Child(Base):
+        __tablename__ = 'right'
+        id = Column(Integer, primary_key=True)
+</code></pre>
+<h1>Basic Steps For Setting Up A Server</h1>
+<p>I thought I'd make a post to help remind myself of some of the important things
+to do when securing a new computer, I'll try to explain some of the reasoning
+behind some of it as well. For both your benefit and mine.</p>
+<p>For the sake of this post, I'm going to assume you're setting up a new Ubuntu
+server. You should try to do this entire process in one hit, that way you'll
+always be using the same SSH session and won't get accidentally locked out.</p>
+<h2>TL;DR</h2>
+<ul>
+<li>Set proper account access and Passwords.</li>
+<li>Configure a firewall and make it as restrictive as possible while still
+allowing the server to do its job.</li>
+<li>Set up SSH properly. Allow key-only access and no root logins.</li>
+<li>Install something like <code>logwatch</code> for basic monitoring.</li>
+</ul>
+<h2>What Do We Need?</h2>
+<p>Instead of starting off installing random programs and configuring them, it's
+better to list some of the things we'll need first. So what will we need to do?</p>
+<p>Accounts and Passwords
+:    Sounds like a pretty basic thing, yet 9 times out of 10 the reason you get
+hacked probably won't be because of some obscure software vulnerability,
+but because you left the root account's password as &quot;password&quot; or &quot;root&quot;.</p>
+<p>Firewall
+:    For blocking off all ports (and therefore services) from being accessible
+from the wider internet, with the exception of a chosen few (e.g. ssh and
+http). We'll also implement rate limiting here so people making too many
+connections too quickly will be blocked.</p>
+<p>SSH Configuration
+:   Configure SSH so that you can't SSH in as root. While we're at it, we may
+as well make it so you can only log in if you have the correct SSH key.</p>
+<h2>Accounts and Passwords</h2>
+<p>The first time you log into your new computer, you'll want to create your own
+user account straight away and give it super-user access via <code>sudo</code>. The reason
+you'll want to do this instead of setting everything up as root is that being
+forced to type <code>sudo</code> before commands that require super-user access is a
+good way to remind yourself that whatever you're changing will affect your
+entire computer, not just your account.</p>
+<p>To add a user, bob:</p>
+<pre><code>adduser bob
+</code></pre>
+<p>Then follow the prompts.</p>
+<p>To give the user the ability to use sudo, you'll need to add them to the <code>sudo</code>
+group:</p>
+<pre><code>adduser bob sudo
+</code></pre>
+<p>When choosing your user's password, it's important that you make sure it's
+reasonably secure. As a general rule of thumb, it should incorporate a
+<strong>minimum</strong> of 8 characters, with 1 or more number and with mixed case.</p>
+<p>The reason I'm stressing this point is that on one of the machines I've had in
+the past I gave the <code>git</code> user the highly original password, &quot;password&quot;,
+because I was using it as a private git repository and wanted to be able to add
+new repositories easily. As you can probably guess, after a while someone
+figured this out, most probably through trial and error (or dumb luck), and
+then used the server (with it's insane internet speeds) to DOS people. Luckily
+after maybe an hour of this excessively high internet usage, the company
+hosting my server realised something was out of the ordinary and shut it down,
+but things could have ended up a lot worse.</p>
+<p>So yeah, weak passwords aren't a great idea. Even if you make sure the account
+has very limited abilities.</p>
+<p>Once you've created your new user and given him sudo access, login to that
+account:</p>
+<pre><code>login bob
+</code></pre>
+<h2>Firewalls</h2>
+<p>The next step in securing our server is to install a firewall. Think of a
+firewall as the gatekeeper for your computer, it'll block any incoming packets
+to all ports except the few you choose to leave open (usually just SSH and
+HTTP). You can also get the firewall to block certain IP addresses or only
+selectively allow access to ports.</p>
+<p>A good example of this is how all of my home computers allow SSH access only if
+you are on the local network. This means that someone trying to SSH in from
+outside (i.e. a hacker or script kiddie) will just be blocked, while you can
+still SSH in from the other room.</p>
+<p>The particular firewall we're going to use is the aptly named <a href="https://wiki.archlinux.org/index.php/Uncomplicated_Firewall">Uncomplicated
+Firewall</a>. It is essentially just a wrapper around the more complicated
+<code>iptables</code> which comes with almost every Linux distro.</p>
+<p>First you need to install UFW:</p>
+<pre><code>sudo apt-get install ufw
+</code></pre>
+<p>Then you'll want to enable it:</p>
+<pre><code>sudo ufw enable
+</code></pre>
+<p>You can then view the default rules if you want:</p>
+<pre><code>sudo ufw status
+</code></pre>
+<p>Or, alternatively:</p>
+<pre><code>sudo ufw status
+</code></pre>
+<p>Now that you've got UFW installed and enabled, you'll want to create some rules
+for it. Depending on your particular circumstances, the rules you create will
+differ but at a bare minimum you'll want to allow SSH to pass through the
+firewall. Otherwise how are you going to log into your server later on?</p>
+<p>The syntax for adding rules is fairly straightforward:</p>
+<pre><code>sudo ufw allow in ssh
+</code></pre>
+<p>You can specify the port either with a service name (i.e. &quot;ssh&quot;), or its
+number (i.e. 22).</p>
+<p>UFW also has the ability to do <code>rate limiting</code>. To deny connections from an
+IP address that has attempted to initiate 6 or more ssh connections in the last
+30 seconds, you can do this:</p>
+<pre><code>sudo ufw limit ssh
+</code></pre>
+<p>A slightly more complicated example is only allowing someone to SSH in from the
+local network (for example using CIDR notation, mine is 192.168.0.0/16).</p>
+<pre><code>sudo ufw allow from 192.168.0.0/16 to 0.0.0.0 port 22
+</code></pre>
+<p>The &quot;0.0.0.0&quot; above is just a shortcut for &quot;all interfaces for this
+computer&quot;.</p>
+<h2>Lock Down SSH</h2>
+<p>By default SSH isn't configured in the most secure way. For instance, you are
+allowed to log in as root, and you only need a password in order to log in as
+any other user.</p>
+<p>The days of passwords are over. You’ll enhance security and ease of use in one
+fell swoop by ditching those passwords and employing public key authentication
+for your user accounts.</p>
+<p>SSH keys work by generating a pair of very long numbers, one is called the
+<code>public key</code> and is given to whoever you want to contact, and the other is
+called the <code>private key</code>, you're the only person who should ever have access to
+this one. When you attempt to log in using SSH keys, the other computer will
+send a message encrypted with your public key that can only be decrypted with
+your private key.</p>
+<p>The keys themselves are many times longer than your password, often thousands
+of bits long, which means it's a lot less likely that someone can pretend to be
+you by brute-forcing the keys. It also relies on having a specific file on your
+computer which is stored in a place that only you should be able to access,
+which is theoretically a lot safer and more reliable than remembering a
+password.</p>
+<p>Additionally, (and probably most importantly) it means you won't need to type
+in a complicated password every time you want to log into a computer. Making
+your life easier and also allowing you to incorporate SSH into your scripts.</p>
+<p>To generate a set of SSH keys run the following and follow the prompts:</p>
+<pre><code>ssh-keygen
+</code></pre>
+<p>The defaults are usually good enough for most purposes.</p>
+<p>Next you'll want to give your server your computer's public key. Do so by
+creating a new file,</p>
+<pre><code>vim ~/.ssh/authorized_keys
+</code></pre>
+<p>And copy/pasting your public key (<code>~/.ssh/id_rsa.pub</code> by default) in at the
+bottom.</p>
+<p>Next make sure the authorized keys file has the correct permissions. If you
+don't do this, then SSH will assume they've been tampered with and lock you
+out.</p>
+<pre><code>chmod 400 /home/bob/.ssh/authorized_keys
+chown bob:bob /home/bob/.ssh -R
+</code></pre>
+<p>The next step is to actually go into the SSH configuration file and change
+things so that you can't SSH in as root and so that SSH keys are required.</p>
+<pre><code>vim /etc/ssh/sshd_config
+</code></pre>
+<p>Add these lines to the file, inserting the ip address from where you will be
+connecting:</p>
+<pre><code>PermitRootLogin no
+PasswordAuthentication no
+</code></pre>
+<p>If you know you'll only be logging in from one location (e.g. your workplace),
+you can further strengthen security by locking SSH to your particular IP.</p>
+<pre><code>AllowUsers bob@(your-ip) bob@(another-ip-if-any)
+</code></pre>
+<p>Now finally, restart the SSH service with</p>
+<pre><code>sudo service ssh restart
+</code></pre>
+<p>Or if you're using Systemd:</p>
+<pre><code>sudo systemctl restart ssh
+</code></pre>
+<h2>Conclusion</h2>
+<p>You should now have most of the basics set up. If you want to test your system,
+try scanning it with <a href="https://nmap.org/">nmap</a>.</p>
+<p>Possible next steps:</p>
+<ul>
+<li>Install an Intrusion Detection System (IDS) like <a href="https://www.digitalocean.com/community/tutorials/how-to-use-psad-to-detect-network-intrusion-attempts-on-an-ubuntu-vps">psad</a> to notify you
+whenever someone tries to detect intrusion attempts.</li>
+<li>Use <a href="https://en.wikipedia.org/wiki/Security-Enhanced_Linux">SELinux</a> to harden the kernel and give you access to some extra
+security utilities.</li>
+<li>Remove KDE/Gnome desktops. A desktop on a server is unnecessary, consumes
+resources, and provides a larger attack surface.</li>
+<li>Monitor all activity on the server using <a href="http://www.tecmint.com/how-to-monitor-user-activity-with-psacct-or-acct-tools/">psacct or acct</a>. These
+applications runs in the background and keeps track of each users activity
+on your system as well as what resources are being consumed</li>
+</ul>
+<p>And of course, make sure your server always has the latest security updates.</p>
+<h1>Rust</h1>
+<p>Here are some of the notes I've written down while working with Rust.</p>
+<h1>Using Rust outside Rust</h1>
+<p>Say you've got a bunch of really fast Rust code (remember, Rust is about the
+same as C, sometimes faster) and want to call it from a slower language like
+Python or Ruby, it's actually pretty easy to do. If you can run C code, you
+can also run Rust.</p>
+<h2>Quick Links</h2>
+<p>For those too lazy to scroll:</p>
+<ul>
+<li><a href="Rust/rust_interop.html#Original%20Function">Original Function</a></li>
+<li><a href="Rust/rust_interop.html#C">C</a></li>
+<li><a href="Rust/rust_interop.html#Lua">Lua</a></li>
+<li><a href="Rust/rust_interop.html#Python">Python</a></li>
+<li><a href="Rust/rust_interop.html#Golang">Golang</a></li>
+</ul>
+<h2>Original Function</h2>
+<p>We're going to make a contrived example to check if a number is prime.</p>
+<pre><code class="language-bash">$ cat prime.rs
+</code></pre>
+<pre><code class="language-rust">#![feature(inclusive_range_syntax)]
+#![feature(step_by)]
+
+pub fn is_prime(n: u64) -&gt; bool {
+    match n {
+        0 | 1 =&gt; false,
+        2 | 3 =&gt; true,
+        n if n &amp; 1 == 0 =&gt; false,   // even numbers
+        n =&gt; {
+            let limit = (n as f64).sqrt() as u64 + 1;
+            for i in (4...limit).step_by(2) {
+                if n % i == 0 {
+                    return false;
+                }
+            }
+            return true;
+        }
+    }
+}
+</code></pre>
+<p>You need to explicitly tell the rust compiler not to mangle the function
+name, and export it as a C function. So the function signature needs to be
+changed a bit...</p>
+<pre><code class="language-rust">#[no_mangle]
+pub extern &quot;C&quot; fn is_prime(n: u64) -&gt; bool {
+...
+}
+</code></pre>
+<p>And to make sure our library is callable from other code, it needs to be
+compiled as a <code>cdylib</code> (with optimisations, of course).</p>
+<pre><code class="language-bash">$ rustc prime.rs -O --crate-type cdylib
+$ ls
+prime.rs  libprime.so
+</code></pre>
+<p>Aaaannnnddd we're done. How easy was that?</p>
+<p>Because the library hasn't been installed into one of the standard locations
+(i.e. <code>/usr/lib/</code>), you'll also need to add an environment variable so things
+know where to find it. You'd need to do the exact same with a C/C++ library
+as well.</p>
+<pre><code class="language-bash">$ export LD_LIBRARY_PATH=.
+</code></pre>
+<h1>C</h1>
+<p>Considering almost everything is descended from C and can interoperate with C,
+it makes sense to check out C first. In this case, calling Rust code from C is
+just like calling code from another library. Even easier if you take into
+account that you don't even need to write a header file.</p>
+<pre><code class="language-c">#include &lt;stdio.h&gt;
+
+extern int is_prime(unsigned int n);
+
+int main() {
+  unsigned int n = 1234567;
+
+  printf(&quot;%d %s prime\n&quot;, n, is_prime(n) ? &quot;is&quot; : &quot;is not&quot;);
+  return 0;
+}
+</code></pre>
+<p>And you link in the Rust library just like any other compiled <code>DLL</code> or <code>*.so</code>
+file:</p>
+<pre><code class="language-bash">$ gcc main.c -L. -lprime
+</code></pre>
+<blockquote>
+<p><strong>Note:</strong> because of a compiler bug at the time and the std library isn't
+being used directly, it isn't linked in when <code>rustc</code> creates our shared
+object. Unfortunately, a couple things were indirectly needed from the std
+library so I was getting linker errors later on. The fix was to add a dummy
+function which uses something from the std library (e.g. a print statement).</p>
+</blockquote>
+<h2>Lua</h2>
+<p>Next is calling our <code>Rust</code> code from <code>Lua</code>. <code>Lua</code> is a super light-weight
+language (about 10,000 lines of C)  often used for embedding into applications
+to make them scriptable. It's also one of the fastest scripting languages
+in use at the moment.</p>
+<p>Here's the script I'm using:</p>
+<pre><code class="language-Lua">ffi = require(&quot;ffi&quot;)
+
+ffi.cdef[[
+int is_prime(unsigned int n);
+]]
+
+rust_lib = ffi.load(&quot;./libprime.so&quot;)
+
+n = 1234567
+
+if rust_lib.is_prime(n) then
+  print(n, &quot;is prime&quot;)
+else
+  print(n, &quot;is not prime&quot;)
+end
+</code></pre>
+<pre><code class="language-bash">$ luajit main.lua
+1234567 is prime
+</code></pre>
+<p>That was easy enough, all you need to do is <code>load()</code> the <code>*.so</code> file and use
+it like pretty much any other library in <code>Lua</code>.</p>
+<h2>Python</h2>
+<p>Next up is <code>Python</code>, unlike Lua, Python is well known for being slow.
+Particularly when it comes to computationally expensive programs.</p>
+<p>Python's standard library comes with a useful module for working with C (or
+any other compiled language) called <code>ctypes</code>. You can use this pretty much the
+same way as in Lua by creating some sort of object out of the loaded <code>*.so</code>
+file and then calling it like normal.</p>
+<pre><code class="language-python">import ctypes
+
+primes = ctypes.CDLL('./libprime.so')
+
+n = 1234567
+
+if primes.is_prime(n):
+    print(n, &quot;is prime&quot;)
+else:
+    print(n, &quot;is not a prime&quot;)
+</code></pre>
+<p>Python also has a really nice library called <code>cffi</code>. With <code>ctypes</code> you usually
+need to define each function, its input arguments, and what it returns in order
+to have type safety, but <code>cffi</code> uses a completely different approach. You just
+pass it the text for a typical C header file and it does the rest. For larger
+projects, or things which may still be evolving, <code>cffi</code> is a much nicer library
+to use.</p>
+<pre><code class="language-python">from cffi import FFI
+
+ffi = FFI()
+
+# Load a header entry for the Rust function
+ffi.cdef(&quot;bool is_prime(int n);&quot;)
+lib = ffi.dlopen(&quot;./libprime.so&quot;)
+
+n = 1234567
+
+if lib.is_prime(n):
+    print(n, &quot;is prime&quot;)
+else:
+    print(n, &quot;is not a prime&quot;)
+
+# trying to use an invalid datatype should fail
+lib.is_prime(&quot;foo&quot;)
+</code></pre>
+<h2>Golang</h2>
+<p>Another language I've been interested in lately is <a href="https://golang.org">Go</a>.
+It's a compiled, statically typed, gabage collected language developed by the
+guys at Google and primarily oriented towards networks, concurrency, and
+microservices.</p>
+<p>Go has a nice trick for allowing you to interact with C code. It's got special
+behaviour when you do <code>import &quot;C&quot;</code>. Any comments above are passed to the
+underlying compiler, meaning you can <code># include</code> any C library just like you
+would in native C. Then, using reflection and other forms of black magic, you're
+able to call anything in the imported namespace as an element of the <code>C</code> object.
+i.e. calling <code>printf()</code> is just a case of doing <code>C.printf(...)</code>.</p>
+<pre><code class="language-go">package main
+
+/*
+#cgo LDFLAGS: -L. -lprime
+#include &quot;./prime.h&quot;
+*/
+import &quot;C&quot;
+import &quot;fmt&quot;
+
+func main() {
+    var n C.uint = 1234567
+    if C.is_prime(n) != 0 {
+        fmt.Printf(&quot;%d is prime\n&quot;, n)
+    } else {
+        fmt.Printf(&quot;%d is not prime\n&quot;, n)
+    }
+}
+</code></pre>
+<h1>Emails and Templates</h1>
+<p>Consider this hypothetical situation; you're at work and your boss walks up to
+you saying you need to send out emails to each of your (100+) clients, and
+they all need to be personalised for marketing purposes.</p>
+<p>It turns out that this is actually a pretty easy job to do in Rust. Normally
+Rust is a systems programming language, but it has enough zero cost abstractions
+and high level features that templating and emails in Rust are about as easy
+to do as they are in Python.</p>
+<p>For this exercise, we'll be needing two crates:</p>
+<ul>
+<li><a href="https://github.com/lettre/lettre">lettre</a> for sending emails, and</li>
+<li><a href="https://github.com/Keats/tera">tera</a> for Django/Jinja2 style templating</li>
+</ul>
+<p>First create a new executable,</p>
+<pre><code>cargo new --bin spammer
+</code></pre>
+<p>And add the dependencies to your <code>Cargo.toml</code>,</p>
+<pre><code>[dependencies]
+tera = &quot;*&quot;
+lettre = &quot;*&quot;
+</code></pre>
+<h2>Writing Templates</h2>
+<p>If you've ever done templating in Python before, the template syntax will be
+pretty familiar. Basically, when you render the template you'll pass it a
+<code>Context</code> (essentially just a dictionary) that contains all the variables and
+data you want to substitute into your template.</p>
+<p>The template itself is just a file that sits on disk somewhere.</p>
+<pre><code>$ cat ./emails.txt
+Hello {{ name }},
+
+You have been a client of ours for {{ years_as_client }}, thank you for
+choosing us and we hope to continue having a great relationship into the future.
+
+Kind Regards,
+{{ sender }}
+</code></pre>
+<p>Creating a context and populating it isn't too difficult. You just call the
+<code>add()</code> method and give it the key, plus a pointer to whatever you're wanting to
+substitute in.</p>
+<pre><code class="language-rust">let mut context = Context::new();
+context.add(&quot;name&quot;, &amp;name);
+context.add(&quot;years_as_client&quot;, &amp;normalized_duration);
+context.add(&quot;sender&quot;, &amp;sender);
+</code></pre>
+<p>You also need to create a <code>Tera</code> object. Think of this as just a rendering
+engine. It needs to know which templates you're wanting to use (I'm using the
+<code>env!()</code> macro here to embed the location of the project directory at compile
+time).</p>
+<pre><code class="language-rust">let project_root = env!(&quot;CARGO_MANIFEST_DIR&quot;);
+let templates = format!(&quot;{}/*.txt&quot;, project_root);
+let tera = Tera::new(&amp;templates);
+</code></pre>
+<p>Then rendering the templates is as simple as iterating through your clients and
+telling <code>tera</code> to render the template. To make life easier, I pulled the
+template construction out into its own function.</p>
+<pre><code class="language-rust">fn main() {
+    ...
+
+    for (name, years_as_client) in clients {
+        let text = format_email(&amp;tera, name, years_as_client, sender).unwrap();
+        println!(&quot;-----&quot;);
+        println!(&quot;{}&quot;, text);
+    }
+
+    ...
+}
+
+fn format_email(tera: &amp;Tera, name: &amp;str, years_as_client: u32, sender: &amp;str) -&gt; TeraResult&lt;String&gt; {
+    let normalized_duration = if years_as_client == 1 {
+        String::from(&quot;1 year&quot;)
+    } else {
+        format!(&quot;{} years&quot;, years_as_client)
+    };
+
+    let mut context = Context::new();
+    context.add(&quot;name&quot;, &amp;name);
+    context.add(&quot;years_as_client&quot;, &amp;normalized_duration);
+    context.add(&quot;sender&quot;, &amp;sender);
+
+    tera.render(&quot;email.txt&quot;, context)
+}
+</code></pre>
+<h2>Sending Emails</h2>
+<p>Constructing and sending emails using <a href="https://github.com/lettre/lettre">lettre</a> is just as easy.</p>
+<p>First you'll construct the email (copied straight from their docs):</p>
+<pre><code class="language-rust">use lettre::email::EmailBuilder;
+
+// Create an email
+let email = EmailBuilder::new()
+    // Addresses can be specified by the tuple (email, alias)
+    .to((client_email, client_name))
+    .from(sender_email)
+    .subject(&quot;Hi, Hello world&quot;)
+    .text(text)
+    .build();
+
+assert!(email.is_ok());
+</code></pre>
+<p>Sending emails is also fairly easy, here's a fairly detailed example (again,
+pulled straight from the docs):</p>
+<pre><code class="language-rust">use lettre::email::EmailBuilder;
+use lettre::transport::smtp::{SecurityLevel, SmtpTransport,
+SmtpTransportBuilder};
+use lettre::transport::smtp::authentication::Mechanism;
+use lettre::transport::smtp::SUBMISSION_PORT;
+use lettre::transport::EmailTransport;
+
+let email = EmailBuilder::new()
+                    .to(&quot;root@localhost&quot;)
+                    .from(&quot;user@localhost&quot;)
+                    .body(&quot;Hello World!&quot;)
+                    .subject(&quot;Hello&quot;)
+                    .build()
+                    .unwrap();
+
+// Connect to a remote server on a custom port
+let mut mailer = SmtpTransportBuilder::new((&quot;server.tld&quot;,
+SUBMISSION_PORT)).unwrap()
+    // Set the name sent during EHLO/HELO, default is `localhost`
+    .hello_name(&quot;my.hostname.tld&quot;)
+    // Add credentials for authentication
+    .credentials(&quot;username&quot;, &quot;password&quot;)
+    // Specify a TLS security level. You can also specify an SslContext with
+    // .ssl_context(SslContext::Ssl23)
+    .security_level(SecurityLevel::AlwaysEncrypt)
+    // Enable SMTPUTF8 if the server supports it
+    .smtp_utf8(true)
+    // Configure expected authentication mechanism
+    .authentication_mechanism(Mechanism::CramMd5)
+    // Enable connection reuse
+    .connection_reuse(true).build();
+
+let result_1 = mailer.send(email.clone());
+assert!(result_1.is_ok());
+
+// The second email will use the same connection
+let result_2 = mailer.send(email);
+assert!(result_2.is_ok());
+
+// Explicitly close the SMTP transaction as we enabled connection reuse
+mailer.close();
+</code></pre>
+<h1>Best Practices</h1>
+<p>Here's a bunch of best practices and design patterns I've discovered in my time
+writing Rust code.</p>
+<p>A lot of these points come from <a href="https://pascalhertleif.de/artikel/good-practices-for-writing-rust-libraries/">this awesome article</a>, so I'd
+recommend checking that out too.</p>
+<h2>Quick Links</h2>
+<p>For those too lazy to scroll:</p>
+<ul>
+<li><a href="Rust/best_practices.html#Format%20Your%20Code">Format Your Code</a></li>
+<li><a href="Rust/best_practices.html#Document%20All%20the%20Things!">Document All The Things!</a></li>
+<li><a href="Rust/best_practices.html#Add%20Even%20More%20Lints">Add Even More Lints</a></li>
+<li><a href="Rust/best_practices.html#Miscellaneous%20Tips">Miscellaneous Tips</a></li>
+</ul>
+<h2>Format Your Code</h2>
+<p>It's always nice to have your code formatted correctly and when everyone follows
+a common coding standard, it's even nicer when your computer can enforce all
+this for you. You should probably use <a href="https://github.com/rust-lang-nursery/rustfmt">rustfmt</a> for this...</p>
+<pre><code>$ cargo install rustfmt
+</code></pre>
+<p>By default, this also installs a <code>fmt</code> sub-command for use with <code>cargo</code>, so now
+you can reformat your entire library with a simple <code>cargo fmt</code> call.</p>
+<p>If you're using the <code>Atom</code> editor and have <code>rustfmt</code> installed then it can run
+<code>rustfmt</code> every time you hit save using <a href="https://atom.io/packages/atom-beautify">atom-beautify</a>.</p>
+<pre><code>$ apm install atom-beautify
+</code></pre>
+<p>To configure <code>rustfmt</code>, just drop a file called <code>rustfmt.toml</code> (or
+<code>.rustfmt.toml</code> if you want) with a bunch of configuration options. You can get
+the list of valid configuration options from rustfmt itself.</p>
+<pre><code>rustfmt --config-help
+</code></pre>
+<p>This is what my usual <code>.rustfmt.toml</code> looks like:</p>
+<pre><code>$ cat .rustfmt.toml
+format_strings = false
+reorder_imports = true
+take_source_hints = false
+report_todo = &quot;Always&quot;
+report_fixme = &quot;Always&quot;
+</code></pre>
+<h2>Document All the Things!</h2>
+<p>It's always nice when you can flick through a crate's documentation and tell
+straight away how to use it and what everything does. Therefore as a bare
+minimum you should make sure that <strong>all</strong> exported functions, structs, and enums
+have at least a line or two describing what they do.</p>
+<p>To enforce this, you can add a lint to your root <code>lib.rs</code> to prevent any changes
+which add undocumented public interfaces.</p>
+<pre><code>#![deny(missing_docs)]
+</code></pre>
+<p>Next up, for any major function or struct, make sure you add a couple of
+examples in the doc comment. These are also compiled and run when you run your
+test suite (you do have tests, don't you?) so it's easy to keep them up to date.</p>
+<pre><code>/// (summary line here)
+///
+/// some more info about the function...
+///
+/// # Examples
+///
+/// ```
+/// let src = &quot;(print 1 2)&quot;;
+/// let ast = parse(src).unwrap();
+/// ```
+</code></pre>
+<h2>Add Even More Lints</h2>
+<p>You can get the compiler to do even more checking for you by simply adding a
+couple extra lints to your crate.</p>
+<pre><code>#![deny(missing_copy_implementations,
+    missing_debug_implementations,
+    missing_docs,
+    trivial_casts,
+    trivial_numeric_casts,
+    unsafe_code,
+    unstable_features,
+    unused_import_braces,
+    unused_qualifications,
+    unused_extern_crates,
+    unused_results,
+    variant_size_differences)]
+</code></pre>
+<h2>Continuous Integration</h2>
+<p>If you use GitHub for storing your code then adding CI is a fairly trivial thing
+to do. Here's a detailed example <code>.travis.yml</code> which will automatically test
+your library on all three channels of the rust compiler, then generate and
+upload your crate's documentation to <a href="https://pages.github.com/">GitHub Pages</a>.</p>
+<pre><code>$ cat .travis.yml
+sudo: false
+language: rust
+rust:
+- nightly
+- beta
+- stable
+matrix:
+allow_failures:
+- rust: nightly
+before_script:
+- |
+pip install 'travis-cargo&lt;0.2' --user &amp;&amp;
+export PATH=$HOME/.local/bin:$PATH
+script:
+- |
+travis-cargo build &amp;&amp;
+travis-cargo test &amp;&amp;
+travis-cargo bench &amp;&amp;
+travis-cargo --only stable doc
+after_success:
+- travis-cargo --only stable doc-upload
+env:
+global:
+- TRAVIS_CARGO_NIGHTLY_FEATURE=dev
+- secure: # encrypted stuff
+</code></pre>
+<p>To enable the auto­matic doc­u­men­ta­tion uploads (i.e. push­ing rust­doc's out­put to
+the pro­jec­t's <code>gh-pages</code> branch) sup­ported by <code>travis-cargo</code>, you need to add an
+envi­ron­ment vari­able called <code>GH_TOKEN</code> that con­tains an access token for your
+GitHub account (encrypted and with lim­ited rights). You can cre­ate one
+<a href="https://github.com/settings/tokens">here</a>.</p>
+<p>To encrypt the token, you can use <a href="https://github.com/travis-ci/travis.rb">Trav­is' CLI tool</a> (installed with
+<code>gem install travis</code>) by run­ning this in your pro­jec­t's root direc­tory
+(replace &quot;1234&quot; with your token):</p>
+<pre><code>$ travis encrypt &quot;GH_TOKEN=1234&quot; --add env.global
+</code></pre>
+<p>When every­thing is set up cor­rectly, you should be able to view your pro­jec­t's
+doc­u­men­ta­tion at <code>https://$USERNAME.github.io/$PROJECT</code>.</p>
+<h2>Error Handling</h2>
+<p>For non-trivial crates where you may have several common error cases, you might
+want to define your own error type. This type can then implement
+[std::convert::From][from] for all the errors you may be wrapping. That way the
+error integrates nicely with the <code>try!()</code> macro and your entire library will
+be simplified by using only one error and <code>Result</code> type.</p>
+<pre><code class="language-rust">use std::io;
+use std::num;
+
+pub type CliResult&lt;T&gt; = Result&lt;T, CliError&gt;;
+
+#[derive(Debug)]
+enum CliError {
+  Io(io::Error),
+  Parse(num::ParseIntError),
+}
+
+impl From&lt;io::Error&gt; for CliError {
+  fn from(err: io::Error) -&gt; CliError {
+    CliError::Io(err)
+  }
+}
+
+...
+</code></pre>
+<p>You should also make sure your custom error implements the <code>std::error::Error</code>
+trait.</p>
+<pre><code class="language-rust">impl Error for CliError {
+  fn description(&amp;self) -&gt; &amp;str {
+    match *self {
+      CliError::Io(ref err) =&gt; err.description(),
+      CliError::Csv(ref err) =&gt; err.description(),
+    }
+  }
+
+  fn cause(&amp;self) -&gt; Option&lt;&amp;Error&gt; {
+    ...
+  }
+}
+</code></pre>
+<h2>Miscellaneous Tips</h2>
+<ul>
+<li>Don't dupli­cate your bina­ry's ver­sion num­ber in your code. Use
+<code>env!(&quot;CARGO_PKG_VERSION&quot;)</code> to get the ver­sion you set in <code>Cargo.toml</code> at
+com­pile time.</li>
+<li>Write com­mit mes­sages in a <a href="https://github.com/ajoslin/conventional-changelog/blob/4bf7d8df29f7be29552b82ec2b7112fad0c39a3e/conventions/angular.md">“con­ven­tional”</a> style and use
+<a href="https://github.com/clog-tool/clog-cli">Clog</a> to auto­mat­i­cally gen­er­ate change logs.</li>
+<li>Install more <a href="https://github.com/rust-lang/cargo/wiki/Third-party-cargo-subcommands">Cargo Sub­com­mands</a>!</li>
+<li>Make sure that all you test each feature of your code (note &quot;unit&quot; in &quot;unit
+test&quot; doesn't necessarily mean each and every little function).</li>
+<li>Integration tests are awesome too.</li>
+</ul>
+<h1>Testing in C</h1>
+<p>Recently I had the opportunity to help out a friend who was working on an
+assignment using C and found some nice patterns to do TDD-style development in
+a language that traditionally makes that a nightmare. So I thought I'd write
+down my thoughts in case I need to do anything similar in the future.</p>
+<p>The first job is to create a <code>test.c</code> file which can be compiled into an
+executable and run.</p>
+<p>The <code>main()</code> function consists of one function call, the call to our test
+runner. The test runner will go through all our tests, run them, and then print
+to the screen whether it was a success or not.</p>
+<p>The general skeleton looks like this:</p>
+<pre><code class="language-c">#define TRUE 1
+#define FALSE 0
+
+void run_tests() {
+  test(&quot;constructor&quot;, test_new_list);
+  test(&quot;push&quot;, test_push);
+  test(&quot;pop&quot;, test_pop);
+  test(&quot;len&quot;, test_len);
+  test(&quot;destructor&quot;, test_destructor);
+}
+
+int main()
+{
+  run_tests();
+  return 0;
+}
+</code></pre>
+<p>If you are familiar with <code>C</code>, then you'll probably know that something's a
+little odd here. The <code>test()</code> &quot;function&quot; is actually taking in the name of a
+test and then a reference to a function, however C doesn't actually allow
+referencing functions and passing them around (not easily anyway).</p>
+<p><code>test()</code> is actually a macro who's definition looks like this:</p>
+<pre><code class="language-c">// Make a `test` macro which will automatically run our tests and print
+// a tick if it was successful. Otherwise it prints a cross.
+#define test(name, function_call) \
+          printf(&quot;testing %s... &quot;, name); \
+          if(function_call()) { \
+            printf(&quot;passed \u2714\n&quot;); \
+          } else { \
+            printf(&quot;failed \u2718\n&quot;); \
+          }
+</code></pre>
+<p>All the <code>test()</code> macro does is print &quot;testing foo...&quot;, then it'll run the
+test and as long as its return value is true, it'll print &quot;passed ✔&quot;. If it
+fails, you'll see &quot;failed ✘&quot;.</p>
+<p>When we run the test executable, this is the output you get:</p>
+<pre><code>testing constructor... passed ✔
+testing push... passed ✔
+testing pop... passed ✔
+testing len... passed ✔
+testing destructor... passed ✔
+</code></pre>
+<p>The key part here is how each test is constructed. Basically, you'll set up
+your inputs, run whatever function you are testing, then <code>assert()</code> that the
+outputs are what you expect. If the function returns <code>TRUE</code> then the test
+passed and if the function returns <code>FALSE</code> then it failed.</p>
+<p>The <code>assert()</code> macro is a really simple macro that just expands to check if
+the expression passed into it is <code>FALSE</code>. If it is, then return <code>FALSE</code>,
+otherwise just continue like normal.</p>
+<pre><code class="language-c">// Define an assert macro which will test an expression and return FALSE
+// if it is not true.
+#define assert(expr) \
+if((expr) == FALSE) { \
+  return FALSE; \
+}
+</code></pre>
+<p>Here's an example where we are checking that a <code>len()</code> function for finding the
+length of a linked list works correctly.</p>
+<pre><code class="language-c">int test_len() {
+  Node \*head = new_list(0);
+
+  assert(len(head) == 1);
+
+  // Add a bunch of stuff to the list and make sure length changes
+  // appropriately
+  int values[] = {1, 2, 3, 4, 5};
+  for (int i=0; i &lt; 5; i++) {
+    head = push(head, values[i]);
+  }
+  assert(len(head) == 6);
+
+  return TRUE;
+}
+</code></pre>
+<p>Invoking all of this is actually pretty easy to do. What you'll do is pull out
+all of your functions and other bits and pieces into their own library, then
+when compiling test, you just link that in and you've got access to everything
+you need for testing.</p>
+<p>Then just add the corresponding section to your Makefile and you're done.</p>
+<p>Along the way, I found that I was often needing to repeat boring setup code,
+so I would pull this out into its own function. For example, here's a function
+which takes in an array and its length, and returns a linked list with all the
+array's elements added.</p>
+<pre><code class="language-c">// Given an array of values, create a new list from them (note: list is
+// reversed)
+Node* make_list(int values[], int length) {
+  Node \*head = new_list(values[0]);
+  for (int i=1; i&lt;length; i++) {
+    head = push(head, values[i]);
+  }
+
+  return head;
+}
+</code></pre>
+<p>Little helper functions like these often make a world of difference when doing
+testing and TDD.</p>
+<h1>LaTeX Snippets</h1>
+<h2>Inserting Images</h2>
+<pre><code class="language-tex">\usepackage{graphicx}
+...
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.8\textwidth]{./q1_model.png}
+\caption{Question 1 System Model}\label{fig:q1_model}
+\end{figure}
+</code></pre>
+<p>Sometimes you'll get those really annoying images who won't stay to their
+designated sections. You can use the <code>placeins</code> package to keep them under
+control.</p>
+<pre><code class="language-tex">\usepackage[section]{placeins}
+</code></pre>
+<h2>Equations</h2>
+<p>First you'll need the <code>amsmath</code> package:</p>
+<pre><code class="language-tex">\usepackage{amsmath}
+</code></pre>
+<p>Then you can enter math like normal, separating each line with <code>\\</code>. You can
+use the <code>&amp;</code> symbol to align each line. LaTeX will try to line up all the
+ampersands.</p>
+<pre><code class="language-tex">\begin{align}
+\frac{D(x) - D_i}{x} &amp;= \frac{D_o - D_i}{1} \\
+D(x) &amp;= x \times (D_o - D_i) + D_i  \\
+D(x) &amp;= x \times 0.5 + 0.25 \label{eq:q2_diameter}
+\end{align}
+</code></pre>
+<p>If you need to embed text in your equations, use the <code>intertext</code> command.</p>
+<pre><code class="language-tex">\begin{align}
+  P_i + \frac{1}{2} \rho V_i^2 &amp;= P(x) + \frac{1}{2} \rho \Big[ V(x) \Big]^2 \\
+  \intertext{Let $P_i$ = 0, so P(x) is now gauge pressure (relative to inlet)} \\
+  P(x) &amp;= \frac{1}{2} \rho V_i^2 - \frac{1}{2} \rho \Big[ V(x) \Big]^2 \\
+\end{align}
+</code></pre>
+<p>Slanted fractions can be accessed via the <code>xfrac</code> package.</p>
+<pre><code class="language-tex">\usepackage{xfrac}
+...
+
+\begin{align}
+  \sfrac{1}{2} - \sfrac{1}{3} &amp;= \sfrac{1}{6}
+\end{align}
+</code></pre>
+<p>When using <code>Python</code> and <code>Pandas</code> for numerical analysis, it is almost trivial
+to set things up so that the results are exported to a file, then included in
+a LaTeX report automatically.</p>
+<p>On the <code>Python</code> side:</p>
+<pre><code class="language-python">with open('data_table.tex', 'w') as f:
+    table = data.to_latex(index=False, escape=False)
+    f.write(table)
+</code></pre>
+<p>And in LaTeX:</p>
+<pre><code class="language-tex">\usepackage{booktabs}
+...
+
+\begin{table}[h]
+  \caption{Calculated and Measured Data}\label{tbl:data_table}
+  \input{./data_table.tex}
+\end{table}
+</code></pre>
+<p>To have the equations numbered according to their section (i.e. 1.1, 2.4, etc)
+instead of using a globally incrementing counter (i.e. 1, 2, 3 etc) use the
+<code>numberswithin</code> command:</p>
+<pre><code class="language-tex">\numberwithin{equation}{section}
+</code></pre>
+<h3>Table from CSV</h3>
+<p>You can insert tables from a csv using the [csvsimple] package and then just
+ask it to do all the hard stuff for generating the table.</p>
+<pre><code>\usepackage{csvsimple}
+...
+
+\csvautotabular{scientists.csv}
+</code></pre>
+<h2>Appendices</h2>
+<p>To start off the appendices section requires just one command:</p>
+<pre><code class="language-tex">\appendix
+</code></pre>
+<p>Thereafter, any <code>section</code> is added as an appendix instead of a normal section.</p>
+<p>To embed a PDF as one of your appendices, you can use the <code>pdfpages</code> package:</p>
+<pre><code class="language-tex">\usepackage{pdfpages}
+
+% Note, I added the front page separately so you can add a \section{} command
+% to make the appendix appear in the ToC. You also scale the document down a
+% tad to make it fit more nicely
+\includepdf[pagecommand=\section{Numerical Analysis}, scale=0.75, pages=1]{./Numerical_Analysis.pdf}
+\includepdf[scale=0.75, pages=2-]{./Numerical_Analysis.pdf}
+</code></pre>
+<h2>Footnotes</h2>
+<p>Adding footnotes is pretty straightforward.</p>
+<pre><code class="language-tex">I'm writing something here to test \footnote{footnotes working fine}
+several features.
+</code></pre>
+<p>Or if you have a particularly long footnote, you can insert a <code>\footnotemark</code>
+and then write the footnote itself at the bottom of your paragraph.</p>
+<pre><code class="language-tex">I'm writing something here to test \footnote[10]{footnotes working fine}
+several features. You can write the footnote text\footnotemark in its
+own line.
+\footnotetext{Second footnote}
+</code></pre>
+<h2>Nomenclature</h2>
+<p>(<a href="https://www.sharelatex.com/learn/Nomenclatures">more info</a>)</p>
+<p>A nomenclature works pretty much the same way as index entries.</p>
+<p>First you need to import the package and let it do some setup stuff:</p>
+<pre><code class="language-tex">\usepackage{nomencl}
+\makenomenclature
+</code></pre>
+<p>Then you'll define some symbols:</p>
+<pre><code class="language-tex">\nomenclature{$c$}{Speed of light in a vacuum inertial frame}
+\nomenclature{$h$}{Planck constant}
+</code></pre>
+<p>And finally tell LaTeX to print the nomenclature:</p>
+<pre><code class="language-tex">\printnomenclature
+</code></pre>
+<p>If you are using <code>latexmk</code> to build your document you need to tell it to do an
+extra run to generate the nomenclature index. Add this to your <code>~/.latexmkrc</code>:</p>
+<pre><code># Custom dependency and function for nomencl package
+add_cus_dep( 'nlo', 'nls', 0, 'makenlo2nls' );
+sub makenlo2nls {
+    system( &quot;makeindex -s nomencl.ist -o \&quot;$_[0].nls\&quot; \&quot;$_[0].nlo\&quot;&quot; );
+}
+</code></pre>
+<p>You can add units by defining this macro in your preamble:</p>
+<pre><code>\newcommand{\nomunit}[1]{%
+\renewcommand{\nomentryend}{\hspace*{\fill}#1}}
+</code></pre>
+<p>Then just include <code>\nomunit{}</code> in a description whenever you want to add units.</p>
+<pre><code>...
+\nomenclature{$c$}{Speed of light in a vacuum inertial system
+  \nomunit{$299,792,458\, m/s$}}
+...
+</code></pre>
+<h2>Referencing</h2>
+<p>Referencing in LaTeX is designed to be fairly painless and efficient to do.</p>
+<p>To cite various sources throughout your work, just add in a <code>\cite{foo}</code>, where
+<code>foo</code> would be a name for some reference in your <code>*.bib</code> file.</p>
+<p>The easiest way to manage your references is with a <code>bib</code> file that sits next
+to your other <code>tex</code> files. It's just a basic text file with references and
+their various bits of metadata listed;</p>
+<pre><code class="language-tex">@misc{chapter_6_notes,
+    author =       &quot;Ramesh Narayanaswamy&quot;,
+    title =        &quot;Flow Over Immersed Bodies: Concepts of Lift and Drag - Chapter 6&quot;,
+    year =         &quot;2016&quot;,
+    URL =          &quot;https://lms.curtin.edu.au/bbcswebdav/pid-4268432-dt-content-rid-23946938_1/courses/308810-CU-061-01-Sxx-x2/2016/LectureNotes/MCEN3002_2016_Chapter_06.pdf&quot;
+}
+</code></pre>
+<p>It's pretty much identical to what you'd normally need to enter in when using
+<code>Word</code>, except instead of filling in random boxes, it's entered into a text
+file that anything (not just M$ products) can read. Plus it's easy to put into
+version control.</p>
+<p>Once you've written up your reference database, all you need to do is tell LaTeX
+to print a bibliography using your <code>foo.bib</code> file, and also the referencing
+style to use.</p>
+<pre><code class="language-tex">\bibliographystyle{apalike}
+\bibliography{references}
+</code></pre>
+<p>Check out <a href="http://sites.stat.psu.edu/%7Esurajit/present/bib.htm">this page</a> for a list of the various bibliography and citation
+styles, and <a href="https://www.andy-roberts.net/res/writing/latex/bibentries.pdf">this page</a> for the various fields and entry types for your
+<code>*.bib</code> file.</p>
+<h2>Templates</h2>
+<p>I've got a pair of templates I use for pretty much everything.</p>
+<ul>
+<li><a href="https://github.com/Michael-F-Bryan/cheat-sheets/blob/master/src/lab_report_template.tex">General report template</a></li>
+<li><a href="https://github.com/Michael-F-Bryan/cheat-sheets/blob/master/src/cover_page_template.tex">Cover Sheet</a></li>
+</ul>
+<h2>Code Listings</h2>
+<p>To insert code snippets you'll need the <code>listings</code> package.</p>
+<pre><code class="language-tex">\usepackage{listings}
+</code></pre>
+<p>Then you can use the <code>lstlisting</code> environment for your code.</p>
+<pre><code class="language-tex">\begin{lstlisting}
+def foo(x):
+    &quot;&quot;&quot;Do something interesting&quot;&quot;&quot;
+    return x**x
+\end{lstlisting}
+</code></pre>
+<p>Alternatively, if you've got a file already that you want include, you can input
+it. Optionally specifying line numbers and language.</p>
+<pre><code class="language-tex">\lstinputlisting[language=Octave, firstline=2, lastline=12]{BitXorMatrix.m}
+</code></pre>
+<p>With the <code>lstlisting</code> environment, you can also add a caption or language.</p>
+<pre><code class="language-tex">\begin{lstlisting}[language=Python, caption=Python example]
+...
+
+\end{lstlisting}
+</code></pre>
+<p>And then you can chuck a <em>list of listings</em> (similar to list of figures, etc) at
+the front of your document.</p>
+<pre><code class="language-tex">\lstlistoflistings
+</code></pre>
+<h2>Custom Floats</h2>
+<p>By default, LaTeX comes with <code>figure</code> and <code>table</code> as the only floats available,
+although it's fairly trivial to add your own custom ones.</p>
+<p>First you need to import the <code>float</code> package,</p>
+<pre><code class="language-tex">\usepackage{float}
+</code></pre>
+<p>Then define your custom float.</p>
+<pre><code class="language-tex">\floatstyle{ruled}
+\newfloat{program}{thp}{lop}
+\floatname{program}{Program}
+</code></pre>
+<p>And use it,</p>
+<pre><code class="language-tex">\begin{program}
+  \begin{verbatim}
+
+class HelloWorldApp {
+  public static void main(String[] args) {
+    //Display the string
+    System.out.println(&quot;Hello World!&quot;);
+  }
+}
+\end{verbatim}
+  \caption{The Hello World! program in Java.}
+\end{program}
+</code></pre>
+<p>From the LaTeX wikibook:</p>
+<ol>
+<li>Add <code>\usepackage{float}</code> to the preamble of your document</li>
+<li>Declare your new float using: <code>\newfloat{type}{placement}{ext}[outer counter]</code>,
+where:
+<ul>
+<li><strong>type</strong> - the new name you wish to call your float, in this instance, 'program'.</li>
+<li><strong>placement</strong> - t, b, p, or h (as previously described in Placement), where
+letters enumerate permitted placements.</li>
+<li><strong>ext</strong> - the file name extension of an auxiliary file for the list of
+figures (or whatever). Latex writes the captions to this file.</li>
+<li><strong>outer counter</strong> - the presence of this parameter indicates that the
+counter associated with this new float should depend on outer counter, for
+example 'chapter'.</li>
+</ul>
+</li>
+<li>The default name that appears at the start of the caption is the type. If you
+wish to alter this, use <code>\floatname{type}{floatname}</code>.</li>
+<li>Changing float style can be issued with <code>\floatstyle{style}</code> (Works on all
+subsequent <code>\newfloat</code> commands, therefore, must be inserted before
+<code>\newfloat</code> to be effective).
+<ul>
+<li><strong>plain</strong> - the normal style for Latex floats, but the caption is always
+below the content.</li>
+<li><strong>plaintop</strong> - the normal style for Latex floats, but the caption is
+always above the content.</li>
+<li><strong>boxed</strong> - a box is drawn that surrounds the float, and the caption is
+printed below.</li>
+<li><strong>ruled</strong> - the caption appears above the float, with rules immediately
+above and below. Then the float contents, followed by a final horizontal rule.</li>
+</ul>
+</li>
+</ol>
+
+                </div>
+
+                <!-- Mobile navigation buttons -->
+                
+
+                
+
+            </div>
+
+            
+
+            
+
+        </div>
+
+
+        <!-- Local fallback for Font Awesome -->
+        <script>
+            if ($(".fa").css("font-family") !== "FontAwesome") {
+                $('<link rel="stylesheet" type="text/css" href="_FontAwesome/css/font-awesome.css">').prependTo('head');
+            }
+        </script>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        
+
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+    </body>
+</html>

@@ -1,0 +1,7 @@
+Hello {{ name }},
+
+You have been a client of ours for {{ years_as_client }}, thank you for
+choosing us and we hope to continue having a great relationship into the future.
+
+Kind Regards,
+{{ sender }}
